@@ -1,13 +1,18 @@
 'use server';
 
-import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { SignOutButton } from './SignOutButton';
 
-export default async function Header() {
-  const session = await auth();
+type HeaderProps = {
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+};
 
+export default async function Header({ user }: HeaderProps) {
   return (
     <header className="w-full border-b bg-background px-8 py-4">
       <nav className="flex items-center justify-between">
@@ -18,24 +23,17 @@ export default async function Header() {
           <Button asChild>
             <Link href="/visits">Visits</Link>
           </Button>
-          {session ? (
-            <>
-              <Button asChild>
-                <Link href="/visits/new">New Visit</Link>
-              </Button>
-              <div className="flex items-center space-x-4">
-                <div className="text-right text-sm text-muted-foreground">
-                  {session.user?.name && <div>{session.user.name}</div>}
-                  <div>{session.user?.email}</div>
-                </div>
-                <SignOutButton />
-              </div>
-            </>
-          ) : (
-            <Button asChild>
-              <Link href="/login">Sign In</Link>
-            </Button>
-          )}
+
+          <Button asChild>
+            <Link href="/visits/new">New Visit</Link>
+          </Button>
+          <div className="flex items-center space-x-4">
+            <div className="text-right text-sm text-muted-foreground">
+              <div>{user.name}</div>
+              <div>{user.email}</div>
+            </div>
+            <SignOutButton />
+          </div>
         </div>
       </nav>
     </header>

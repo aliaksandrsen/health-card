@@ -9,13 +9,13 @@ export default async function LoggedInLayout({
 }) {
   const session = await auth();
 
-  if (!session?.user?.id) {
+  if (!session?.user) {
     redirect('/login');
   }
 
   return (
     <div>
-      <Header />
+      <Header user={session.user} />
       <main className="flex-1">{children}</main>
     </div>
   );

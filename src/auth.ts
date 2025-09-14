@@ -51,7 +51,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return { ...token, id: token.id ?? user?.id };
     },
     async session({ session, token }) {
-      return { ...session, user: { ...session.user, id: token.id as string } };
+      // Ensure required fields on session.user per module augmentation
+      const user = {
+        id: (token.id as string) ?? '',
+        name: session.user?.name ?? '',
+        email: session.user?.email ?? '',
+        image: session.user?.image ?? null,
+      };
+      return { ...session, user };
     },
   },
 });

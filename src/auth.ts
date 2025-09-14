@@ -9,7 +9,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        // name: { label: 'Name', type: 'name' },
+        name: { label: 'Name', type: 'name' },
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
@@ -25,22 +25,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error('Incorrect credentials');
         }
 
-        // if (!user) {
-        //   const created = await prisma.user.create({
-        //     data: {
-        //       name: credentials.name ?? credentials.email,
-        //       email: credentials.email,
-        //       password: await bcrypt.hash(credentials.password, 10),
-        //     },
-        //   });
-        //   const authUser: NextAuthUser = {
-        //     id: created.id.toString(),
-        //     name: created.name ?? undefined,
-        //     email: created.email,
-        //   };
-        //   return authUser;
-        // }
-
         const isCorrectPassword = await bcrypt.compare(
           credentials.password as string,
           user.password ?? '',
@@ -52,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         const authUser: NextAuthUser = {
           id: user.id.toString(),
-          // name: user.name ?? undefined,
+          name: user.name,
           email: user.email,
         };
         return authUser;

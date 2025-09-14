@@ -1,101 +1,160 @@
 'use client';
 
+import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { signIn } from 'next-auth/react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { registerUser } from './actions';
+
+const formSchema = z
+  .object({
+    email: z.email(),
+    name: z.string(),
+  })
+  .and(passwordMatchSchema);
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      passwordConfirm: '',
+    },
+  });
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    try {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    const response = await registerUser({
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
 
-      const signInResult = await signIn('credentials', {
-        ...Object.fromEntries(formData),
-        redirect: false,
+    if (response?.error) {
+      form.setError('email', {
+        type: 'manual',
+        message: response.error,
       });
-
-      if (signInResult?.error) {
-        setError('Failed to sign in after registration');
-        return;
-      }
-
-      router.push('/');
-      router.refresh();
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'Registration failed');
     }
-  }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center">Create your account</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  placeholder="Full name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                />
-              </div>
-            </div>
-
-            {error && (
-              <div className="text-center text-sm text-destructive">
-                {error}
-              </div>
-            )}
-
-            <Button type="submit" className="w-full">
-              Register
+      {form.formState.isSubmitSuccessful ? (
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle>Your account has been created</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full">
+              <Link href="/login">Login to your account</Link>
             </Button>
-          </form>
-          <div className="mt-6 text-center">
-            <Link
-              href="/login"
-              className="text-sm text-primary underline-offset-4 hover:underline"
-            >
-              Already have an account? Sign in
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="w-[350px]">
+          <CardHeader>
+            <CardTitle className="text-center">Register</CardTitle>
+            <CardDescription className="text-center">
+              Register for a new account.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <fieldset
+                  disabled={form.formState.isSubmitting}
+                  className="flex flex-col gap-2"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="email" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="text" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="password" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="passwordConfirm"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password confirm</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="password" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full">
+                    Register
+                  </Button>
+                </fieldset>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex-col gap-2">
+            <div className="text-sm text-muted-foreground">
+              Already have an account?{' '}
+              <Link href="/login" className="underline">
+                Sing in
+              </Link>
+            </div>
+          </CardFooter>
+        </Card>
+      )}
     </div>
   );
 }

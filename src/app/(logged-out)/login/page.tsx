@@ -53,7 +53,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+      <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="text-center">Sign in to your account</CardTitle>
         </CardHeader>
@@ -105,12 +105,12 @@ export default function LoginPage() {
             </form>
           </Form>
           <div className="mt-6 text-center">
-            <Link
-              href="/register"
-              className="text-primary text-sm underline-offset-4 hover:underline"
-            >
-              No account? Register.
-            </Link>
+            <div className="text-sm text-muted-foreground">
+              No account?{' '}
+              <Link href="/register" className="underline">
+                Register
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>

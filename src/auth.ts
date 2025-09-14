@@ -39,7 +39,7 @@ export const authOptions = {
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
-          user.password ?? ''
+          user.password ?? '',
         );
 
         if (!isCorrectPassword) {
@@ -63,7 +63,7 @@ export const authOptions = {
       return { ...token, id: token.id ?? user?.id };
     },
     async session({ session, token }) {
-      return { ...session, user: { ...session.user, id: token.id } };
+      return { ...session, user: { ...session.user, id: token.id as string } };
     },
   },
 } satisfies NextAuthOptions;

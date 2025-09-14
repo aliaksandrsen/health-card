@@ -1,14 +1,12 @@
 'use server';
 
-import prisma from '@/lib/prisma';
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
+import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export async function createVisit(formData: FormData) {
   const session = await getServerSession(authOptions);
-
-  console.log('🚀 ~ createVisit ~ session:', session);
 
   if (!session?.user) {
     throw new Error('You must be logged in to create a visit');

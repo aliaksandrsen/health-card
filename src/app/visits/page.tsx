@@ -1,9 +1,9 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
 interface Visit {
   id: number;

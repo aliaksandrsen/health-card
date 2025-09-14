@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center">Sign in to your account</CardTitle>
@@ -66,7 +66,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="text-destructive text-sm text-center">
+              <div className="text-destructive text-center text-sm">
                 {error}
               </div>
             )}
@@ -75,10 +75,10 @@ export default function LoginPage() {
               Sign in
             </Button>
           </form>
-          <div className="text-center mt-6">
+          <div className="mt-6 text-center">
             <Link
               href="/register"
-              className="text-sm text-primary underline-offset-4 hover:underline"
+              className="text-primary text-sm underline-offset-4 hover:underline"
             >
               No account? Register.
             </Link>

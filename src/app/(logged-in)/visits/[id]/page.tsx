@@ -61,10 +61,7 @@ export default async function Visit({
         <CardHeader>
           <CardTitle className="text-4xl">{visit.title}</CardTitle>
           <CardDescription>
-            by{' '}
-            <span className="font-medium">
-              {visit.user?.name || 'Anonymous'}
-            </span>
+            by <span className="font-medium">{visit.user.name}</span>
           </CardDescription>
         </CardHeader>
         <CardContent>

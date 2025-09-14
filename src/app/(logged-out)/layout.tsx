@@ -9,7 +9,7 @@ export default async function LoggedOutLayout({
   const session = await auth();
 
   if (!!session?.user?.id) {
-    redirect('/login');
+    redirect('/');
   }
 
   return <>{children}</>;

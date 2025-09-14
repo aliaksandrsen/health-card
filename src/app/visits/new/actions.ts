@@ -7,6 +7,9 @@ import { authOptions } from '@/auth';
 
 export async function createVisit(formData: FormData) {
   const session = await getServerSession(authOptions);
+
+  console.log('🚀 ~ createVisit ~ session:', session);
+
   if (!session?.user) {
     throw new Error('You must be logged in to create a visit');
   }

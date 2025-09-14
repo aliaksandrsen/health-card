@@ -1,31 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { signIn } from 'next-auth/react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    console.log('🚀 ~ handleSubmit ~ event:', event);
     try {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
 
-      console.log('🚀 ~ handleSubmit ~ formData:', formData);
       const signInResult = await signIn('credentials', {
         ...Object.fromEntries(formData),
         redirect: false,
       });
-
-      console.log('🚀 ~ handleSubmit ~ signInResult:', signInResult);
 
       if (signInResult?.error) {
         setError('Failed to sign in after registration');
@@ -50,26 +46,51 @@ export default function RegisterPage() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" type="text" required placeholder="Full name" />
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Full name"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
-                <Input id="email" name="email" type="email" required placeholder="you@example.com" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" name="password" type="password" required placeholder="••••••••" />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                />
               </div>
             </div>
 
             {error && (
-              <div className="text-destructive text-sm text-center">{error}</div>
+              <div className="text-destructive text-sm text-center">
+                {error}
+              </div>
             )}
 
-            <Button type="submit" className="w-full">Register</Button>
+            <Button type="submit" className="w-full">
+              Register
+            </Button>
           </form>
           <div className="text-center mt-6">
-            <Link href="/login" className="text-sm text-primary underline-offset-4 hover:underline">
+            <Link
+              href="/login"
+              className="text-sm text-primary underline-offset-4 hover:underline"
+            >
               Already have an account? Sign in
             </Link>
           </div>

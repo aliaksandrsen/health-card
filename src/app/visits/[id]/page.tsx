@@ -1,17 +1,17 @@
 export const dynamic = 'force-dynamic'; // This disables SSG and ISR
 
-import prisma from '@/lib/prisma';
-import { notFound, redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { notFound, redirect } from 'next/navigation';
 
 export default async function Visit({
   params,

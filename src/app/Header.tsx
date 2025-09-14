@@ -1,18 +1,14 @@
-'use client';
+'use server';
 
+import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
-import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { SignOutButton } from './SignOutButton';
 
-export default function Header() {
-  const { data: session } = useSession();
-  const pathname = usePathname();
+export default async function Header() {
+  const session = await auth();
 
-  // Hide header on login and register pages
-  if (pathname === '/login' || pathname === '/register') {
-    return null;
-  }
+  // console.log('🚀 ~ Header ~ session:', session);
 
   return (
     <header className="w-full border-b bg-background py-4 px-8">
@@ -34,9 +30,7 @@ export default function Header() {
                   {session.user?.name && <div>{session.user.name}</div>}
                   <div>{session.user?.email}</div>
                 </div>
-                <Button variant="destructive" onClick={() => signOut()}>
-                  Sign Out
-                </Button>
+                <SignOutButton />
               </div>
             </>
           ) : (

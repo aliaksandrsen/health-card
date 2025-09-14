@@ -1,17 +1,14 @@
 'use server';
 
 import { signIn } from '@/auth';
-// import { signIn } from '@/auth';
 import z from 'zod';
 
 export const loginWithCredentials = async ({
   email,
   password,
-  // token,
 }: {
   email: string;
   password: string;
-  // token?: string;
 }) => {
   const loginSchema = z.object({
     email: z.email(),
@@ -33,11 +30,9 @@ export const loginWithCredentials = async ({
     await signIn('credentials', {
       email,
       password,
-      // token,
       redirect: false,
     });
-  } catch (e) {
-    console.error('Error during login:', e);
+  } catch {
     return {
       error: 'Incorrect email or password',
     };

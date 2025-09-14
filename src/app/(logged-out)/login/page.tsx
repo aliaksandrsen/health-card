@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { passwordSchema } from '../validation/passwordSchema';
+import { passwordSchema } from '../../validation/passwordSchema';
 import { loginWithCredentials } from './actions';
 
 const formSchema = z.object({
@@ -26,7 +26,6 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter();
-  // const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,29 +35,7 @@ export default function LoginPage() {
     },
   });
 
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   try {
-  //     event.preventDefault();
-  //     const formData = new FormData(event.currentTarget);
-  //     const response = await signIn('credentials', {
-  //       ...Object.fromEntries(formData),
-  //       redirect: false,
-  //     });
-
-  //     if (response?.error) {
-  //       setError('Invalid credentials');
-  //       return;
-  //     }
-
-  //     router.push('/');
-  //     router.refresh();
-  //   } catch {
-  //     setError('An error occurred during login');
-  //   }
-  // };
-
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log('🚀 ~ handleSubmit ~ data:', data);
     const response = await loginWithCredentials({
       email: data.email,
       password: data.password,
@@ -90,7 +67,6 @@ export default function LoginPage() {
                 disabled={form.formState.isSubmitting}
                 className="flex flex-col gap-2"
               >
-                {/* <div className="space-y-4"> */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -117,7 +93,11 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-
+                {!!form.formState.errors.root?.message && (
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                )}
                 <Button type="submit" className="w-full">
                   Sign in
                 </Button>

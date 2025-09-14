@@ -17,7 +17,7 @@ export async function createVisit(formData: FormData) {
     data: {
       title: formData.get('title') as string,
       content: formData.get('content') as string,
-      authorId: +session.user.id,
+      userId: +session.user.id,
     },
   });
 

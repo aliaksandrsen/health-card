@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'; // This disables SSG and ISR
+'use server';
 
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
@@ -26,9 +26,9 @@ export default async function Visit({
   const visitId = parseInt(id);
 
   const visit = await prisma.visit.findFirst({
-    where: { id: visitId, authorId: +session.user.id },
+    where: { id: visitId, userId: +session.user.id },
     include: {
-      author: true,
+      user: true,
     },
   });
 
@@ -48,7 +48,7 @@ export default async function Visit({
     await prisma.visit.deleteMany({
       where: {
         id: visitId,
-        authorId: +session.user.id,
+        userId: +session.user.id,
       },
     });
 
@@ -56,23 +56,23 @@ export default async function Visit({
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
-      <Card className="max-w-3xl w-full">
+    <div className="flex min-h-screen flex-col items-center justify-center p-8">
+      <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle className="text-4xl">{visit.title}</CardTitle>
           <CardDescription>
             by{' '}
             <span className="font-medium">
-              {visit.author?.name || 'Anonymous'}
+              {visit.user?.name || 'Anonymous'}
             </span>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-lg leading-relaxed space-y-6">
+          <div className="space-y-6 text-lg leading-relaxed">
             {visit.content ? (
               <p>{visit.content}</p>
             ) : (
-              <p className="italic text-muted-foreground">
+              <p className="text-muted-foreground italic">
                 No content available for this visit.
               </p>
             )}

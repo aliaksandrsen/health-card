@@ -10,7 +10,7 @@ interface Visit {
   title: string;
   content?: string;
   createdAt: string;
-  author?: {
+  user: {
     name: string;
   };
 }
@@ -50,8 +50,8 @@ function VisitsList() {
   return (
     <>
       {isLoading ? (
-        <div className="flex items-center justify-center space-x-2 min-h-[200px]">
-          <div className="w-6 h-6 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <div className="flex min-h-[200px] items-center justify-center space-x-2">
+          <div className="h-6 w-6 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
           <p className="text-muted-foreground">Loading...</p>
         </div>
       ) : (
@@ -59,11 +59,11 @@ function VisitsList() {
           {visits.length === 0 ? (
             <p className="text-muted-foreground">No visits available.</p>
           ) : (
-            <ul className="space-y-6 w-full max-w-4xl mx-auto">
+            <ul className="mx-auto w-full max-w-4xl space-y-6">
               {visits.map((visit) => (
                 <li
                   key={visit.id}
-                  className="border p-6 rounded-lg shadow-md bg-card"
+                  className="rounded-lg border bg-card p-6 shadow-md"
                 >
                   <Link
                     href={`/visits/${visit.id}`}
@@ -72,7 +72,7 @@ function VisitsList() {
                     {visit.title}
                   </Link>
                   <p className="text-sm text-muted-foreground">
-                    by {visit.author?.name || 'Anonymous'}
+                    by {visit.user.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(visit.createdAt).toLocaleDateString('en-US', {
@@ -87,7 +87,7 @@ function VisitsList() {
           )}
 
           {/* Pagination Controls */}
-          <div className="flex justify-center space-x-4 mt-8">
+          <div className="mt-8 flex justify-center space-x-4">
             {page > 1 && (
               <Link href={`/visits?page=${page - 1}`}>
                 <Button variant="secondary">Previous</Button>
@@ -107,11 +107,11 @@ function VisitsList() {
 
 export default function VisitsPage() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start p-8">
+    <div className="flex min-h-screen flex-col items-center justify-start p-8">
       <Suspense
         fallback={
-          <div className="flex items-center justify-center min-h-screen">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="flex min-h-screen items-center justify-center">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
             <p className="ml-3 text-muted-foreground">Loading page...</p>
           </div>
         }

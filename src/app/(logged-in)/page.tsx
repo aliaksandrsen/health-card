@@ -13,8 +13,8 @@ export default async function Home() {
     ? await prisma.visit.findMany({
         orderBy: { createdAt: 'desc' },
         take: 6,
-        where: { authorId: userId },
-        include: { author: { select: { name: true } } },
+        where: { userId: userId },
+        include: { user: { select: { name: true } } },
       })
     : [];
 

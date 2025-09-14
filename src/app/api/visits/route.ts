@@ -18,12 +18,12 @@ export async function GET(request: Request) {
     skip: offset,
     take: visitsPerPage,
     orderBy: { createdAt: 'desc' },
-    where: { authorId: +session.user.id },
-    include: { author: { select: { name: true } } },
+    where: { userId: +session.user.id },
+    include: { user: { select: { name: true } } },
   });
 
   const totalVisits = await prisma.visit.count({
-    where: { authorId: +session.user.id },
+    where: { userId: +session.user.id },
   });
   const totalPages = Math.ceil(totalVisits / visitsPerPage);
 

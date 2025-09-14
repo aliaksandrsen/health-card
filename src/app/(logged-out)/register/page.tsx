@@ -36,7 +36,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center">Create your account</CardTitle>
@@ -77,7 +77,7 @@ export default function RegisterPage() {
             </div>
 
             {error && (
-              <div className="text-destructive text-sm text-center">
+              <div className="text-center text-sm text-destructive">
                 {error}
               </div>
             )}
@@ -86,7 +86,7 @@ export default function RegisterPage() {
               Register
             </Button>
           </form>
-          <div className="text-center mt-6">
+          <div className="mt-6 text-center">
             <Link
               href="/login"
               className="text-sm text-primary underline-offset-4 hover:underline"

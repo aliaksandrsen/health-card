@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import Header from '../Header';
+import Header from './Header';
 
 export default async function LoggedInLayout({
   children,

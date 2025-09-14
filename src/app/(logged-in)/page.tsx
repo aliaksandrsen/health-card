@@ -1,13 +1,7 @@
-export const dynamic = 'force-dynamic'; // This disables SSG and ISR
+'use server';
 
 import { auth } from '@/auth';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 
@@ -25,29 +19,25 @@ export default async function Home() {
     : [];
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-24 px-8">
+    <div className="flex min-h-screen flex-col items-center px-8 py-24">
       {visits && visits.length > 0 && (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mb-8">
+        <div className="mb-8 grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {visits.map((visit) => (
             <Link key={visit.id} href={`/visits/${visit.id}`} className="group">
-              <Card className="hover:shadow-md transition-shadow">
+              <Card className="transition-shadow hover:shadow-md">
                 <CardHeader>
-                  <CardTitle className="group-hover:underline">
-                    {visit.title}
-                  </CardTitle>
-                  <CardDescription>
-                    by {visit.author ? visit.author.name : 'Anonymous'}
-                  </CardDescription>
+                  <CardTitle>{visit.title}</CardTitle>
+                  {/* <CardDescription>{visit.author.name}</CardDescription> */}
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground mb-4">
+                  <p className="mb-4 text-xs text-muted-foreground">
                     {new Date(visit.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     })}
                   </p>
-                  <p className="leading-relaxed line-clamp-2">
+                  <p className="line-clamp-2 leading-relaxed">
                     {visit.content || 'No content available.'}
                   </p>
                 </CardContent>

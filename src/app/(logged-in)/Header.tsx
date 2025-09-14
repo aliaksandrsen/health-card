@@ -8,11 +8,9 @@ import { SignOutButton } from './SignOutButton';
 export default async function Header() {
   const session = await auth();
 
-  // console.log('🚀 ~ Header ~ session:', session);
-
   return (
-    <header className="w-full border-b bg-background py-4 px-8">
-      <nav className="flex justify-between items-center">
+    <header className="w-full border-b bg-background px-8 py-4">
+      <nav className="flex items-center justify-between">
         <Link href="/" className="text-xl font-bold hover:text-primary">
           Health Card
         </Link>
@@ -26,7 +24,7 @@ export default async function Header() {
                 <Link href="/visits/new">New Visit</Link>
               </Button>
               <div className="flex items-center space-x-4">
-                <div className="text-sm text-muted-foreground text-right">
+                <div className="text-right text-sm text-muted-foreground">
                   {session.user?.name && <div>{session.user.name}</div>}
                   <div>{session.user?.email}</div>
                 </div>

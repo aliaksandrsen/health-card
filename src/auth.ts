@@ -1,15 +1,15 @@
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { type NextAuthOptions, type User as NextAuthUser } from 'next-auth';
+import NextAuth, { type User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const authOptions = {
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     CredentialsProvider({
-      name: 'credentials',
+      name: 'Credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        name: { label: 'Name', type: 'name' },
+        // name: { label: 'Name', type: 'name' },
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
@@ -18,27 +18,31 @@ export const authOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials.email as string },
         });
 
         if (!user) {
-          const created = await prisma.user.create({
-            data: {
-              name: credentials.name ?? credentials.email,
-              email: credentials.email,
-              password: await bcrypt.hash(credentials.password, 10),
-            },
-          });
-          const authUser: NextAuthUser = {
-            id: created.id.toString(),
-            name: created.name ?? undefined,
-            email: created.email,
-          };
-          return authUser;
+          throw new Error('Incorrect credentials');
         }
 
+        // if (!user) {
+        //   const created = await prisma.user.create({
+        //     data: {
+        //       name: credentials.name ?? credentials.email,
+        //       email: credentials.email,
+        //       password: await bcrypt.hash(credentials.password, 10),
+        //     },
+        //   });
+        //   const authUser: NextAuthUser = {
+        //     id: created.id.toString(),
+        //     name: created.name ?? undefined,
+        //     email: created.email,
+        //   };
+        //   return authUser;
+        // }
+
         const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
+          credentials.password as string,
           user.password ?? '',
         );
 
@@ -48,7 +52,7 @@ export const authOptions = {
 
         const authUser: NextAuthUser = {
           id: user.id.toString(),
-          name: user.name ?? undefined,
+          // name: user.name ?? undefined,
           email: user.email,
         };
         return authUser;
@@ -66,4 +70,4 @@ export const authOptions = {
       return { ...session, user: { ...session.user, id: token.id as string } };
     },
   },
-} satisfies NextAuthOptions;
+});

@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'; // This disables SSG and ISR
 
-import { authOptions } from '@/auth';
+import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { notFound, redirect } from 'next/navigation';
 
 export default async function Visit({
@@ -18,7 +17,7 @@ export default async function Visit({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     notFound();
   }
@@ -40,8 +39,8 @@ export default async function Visit({
   // Server action to delete the visit
   async function deleteVisit() {
     'use server';
-    const sessionInner = await getServerSession(authOptions);
-    if (!sessionInner?.user?.id) {
+    const session = await auth();
+    if (!session?.user?.id) {
       notFound();
     }
 
@@ -49,7 +48,7 @@ export default async function Visit({
     await prisma.visit.deleteMany({
       where: {
         id: visitId,
-        authorId: +sessionInner.user.id,
+        authorId: +session.user.id,
       },
     });
 

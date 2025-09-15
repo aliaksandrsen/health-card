@@ -6,6 +6,13 @@ import { Prisma } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
 
+const newUserSchema = z
+  .object({
+    email: z.email(),
+    name: z.string().min(2).max(20),
+  })
+  .and(passwordMatchSchema);
+
 export const registerUser = async ({
   email,
   name,
@@ -18,13 +25,6 @@ export const registerUser = async ({
   passwordConfirm: string;
 }) => {
   try {
-    const newUserSchema = z
-      .object({
-        email: z.email(),
-        name: z.string().optional(),
-      })
-      .and(passwordMatchSchema);
-
     const newUserValues = newUserSchema.safeParse({
       email,
       name,

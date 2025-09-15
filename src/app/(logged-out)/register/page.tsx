@@ -28,7 +28,7 @@ import { registerUser } from './actions';
 const formSchema = z
   .object({
     email: z.email(),
-    name: z.string(),
+    name: z.string().min(2).max(20),
   })
   .and(passwordMatchSchema);
 

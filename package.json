@@ -18,6 +18,7 @@
     "zod": "4.1.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
     "@eslint/eslintrc": "3.3.1",
     "@tailwindcss/postcss": "4.1.13",
     "@testing-library/dom": "10.4.1",
@@ -45,10 +46,11 @@
   "name": "health-card",
   "private": true,
   "scripts": {
-    "build": "next build --turbopack",
     "dev": "next dev --turbopack",
-    "lint": "eslint",
+    "build": "next build --turbopack",
     "start": "next start",
+    "lint": "biome check",
+    "format": "biome format --write",
     "test": "vitest"
   },
   "version": "0.1.0"

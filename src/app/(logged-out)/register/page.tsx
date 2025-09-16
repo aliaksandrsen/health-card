@@ -27,8 +27,12 @@ import { registerUser } from './actions';
 
 const formSchema = z
   .object({
-    email: z.email(),
-    name: z.string().min(2).max(20),
+    email: z.email().trim(),
+    name: z
+      .string()
+      .trim()
+      .min(3, 'Name must be at least 3 characters')
+      .max(20, 'Name must be at most 20 characters'),
   })
   .and(passwordMatchSchema);
 
@@ -37,6 +41,7 @@ export default function RegisterPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
+      name: '',
       password: '',
       passwordConfirm: '',
     },

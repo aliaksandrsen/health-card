@@ -1,6 +1,6 @@
+import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
-import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const session = await auth();
@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   }
 
   const url = new URL(request.url);
-  const page = parseInt(url.searchParams.get('page') || '1');
+  const page = parseInt(url.searchParams.get('page') || '1', 10);
   const visitsPerPage = 5;
   const offset = (page - 1) * visitsPerPage;
 

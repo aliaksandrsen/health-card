@@ -1,10 +1,10 @@
 'use server';
 
-import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
-import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { z } from 'zod';
+import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
+import prisma from '@/lib/prisma';
 
 const newUserSchema = z
   .object({

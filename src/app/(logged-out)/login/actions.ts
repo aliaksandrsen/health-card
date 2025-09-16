@@ -1,7 +1,7 @@
 'use server';
 
-import { signIn } from '@/auth';
 import z from 'zod';
+import { signIn } from '@/auth';
 
 export const loginWithCredentials = async ({
   email,

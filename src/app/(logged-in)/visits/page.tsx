@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface Visit {
   id: number;
@@ -20,7 +20,7 @@ export const dynamic = 'force-dynamic';
 
 function VisitsList() {
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1');
+  const page = parseInt(searchParams.get('page') || '1', 10);
 
   const [visits, setVisits] = useState<Visit[]>([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -67,14 +67,14 @@ function VisitsList() {
                 >
                   <Link
                     href={`/visits/${visit.id}`}
-                    className="text-2xl font-semibold hover:underline"
+                    className="font-semibold text-2xl hover:underline"
                   >
                     {visit.title}
                   </Link>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     by {visit.user.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {new Date(visit.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',

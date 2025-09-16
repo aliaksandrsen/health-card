@@ -1,9 +1,9 @@
 'use server';
 
+import Link from 'next/link';
 import { auth } from '@/auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
-import Link from 'next/link';
 
 export default async function Home() {
   const session = await auth();
@@ -30,7 +30,7 @@ export default async function Home() {
                   {/* <CardDescription>{visit.author.name}</CardDescription> */}
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4 text-xs text-muted-foreground">
+                  <p className="mb-4 text-muted-foreground text-xs">
                     {new Date(visit.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',

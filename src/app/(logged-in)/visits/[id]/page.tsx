@@ -1,5 +1,6 @@
 'use server';
 
+import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,7 +11,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
-import { notFound, redirect } from 'next/navigation';
 
 export default async function Visit({
   params,
@@ -23,7 +23,7 @@ export default async function Visit({
   }
 
   const { id } = await params;
-  const visitId = parseInt(id);
+  const visitId = parseInt(id, 10);
 
   const visit = await prisma.visit.findFirst({
     where: { id: visitId, userId: +session.user.id },

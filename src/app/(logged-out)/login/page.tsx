@@ -1,5 +1,10 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -11,11 +16,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { passwordSchema } from '../../validation/passwordSchema';
 import { loginWithCredentials } from './actions';
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
             </form>
           </Form>
           <div className="mt-6 text-center">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-muted-foreground text-sm">
               No account?{' '}
               <Link href="/register" className="underline">
                 Register

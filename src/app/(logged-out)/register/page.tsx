@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
@@ -37,6 +38,8 @@ const formSchema = z
   .and(passwordMatchSchema);
 
 export default function RegisterPage() {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,12 +63,16 @@ export default function RegisterPage() {
         type: 'manual',
         message: response.error,
       });
+      setIsSuccess(false);
+      return;
     }
+
+    setIsSuccess(true);
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      {form.formState.isSubmitSuccessful ? (
+      {isSuccess ? (
         <Card className="w-[350px]">
           <CardHeader>
             <CardTitle>Your account has been created</CardTitle>

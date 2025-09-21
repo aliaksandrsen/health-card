@@ -1,17 +1,13 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import NextAuth, { type User as NextAuthUser } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
+import { authConfig } from '../auth.config';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        name: { label: 'Name', type: 'name' },
-        password: { label: 'Password', type: 'password' },
-      },
       authorize: async (credentials) => {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Invalid credentials');
@@ -43,9 +39,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: '/login',
-  },
   callbacks: {
     async jwt({ token, user }) {
       return { ...token, id: token.id ?? user?.id };
@@ -60,5 +53,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
       return { ...session, user };
     },
+    ...authConfig.callbacks,
   },
 });

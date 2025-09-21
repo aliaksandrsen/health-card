@@ -1,7 +1,7 @@
 'use server';
 
 import { Prisma } from '@prisma/client';
-import { hash } from 'bcryptjs';
+import { hash } from 'bcrypt';
 import { z } from 'zod';
 import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
 import prisma from '@/lib/prisma';

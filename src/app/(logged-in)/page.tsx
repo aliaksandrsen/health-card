@@ -27,7 +27,6 @@ export default async function Home() {
               <Card className="transition-shadow hover:shadow-md">
                 <CardHeader>
                   <CardTitle>{visit.title}</CardTitle>
-                  {/* <CardDescription>{visit.author.name}</CardDescription> */}
                 </CardHeader>
                 <CardContent>
                   <p className="mb-4 text-muted-foreground text-xs">

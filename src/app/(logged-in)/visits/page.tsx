@@ -1,123 +1,120 @@
-'use client';
+'use server';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import prisma from '@/lib/prisma';
 
-interface Visit {
-  id: number;
-  title: string;
-  content?: string;
-  createdAt: string;
-  user: {
-    name: string;
-  };
-}
+const VISITS_PER_PAGE = 5;
 
-// Disable static generation
-export const dynamic = 'force-dynamic';
+type VisitsPageSearchParams = {
+  [key: string]: string | string[] | undefined;
+  page?: string | string[];
+};
 
-function VisitsList() {
-  const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
+export default async function VisitsPage({
+  searchParams,
+}: {
+  searchParams?: VisitsPageSearchParams;
+}) {
+  const session = await auth();
 
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  if (!session?.user?.id) {
+    redirect('/login');
+  }
 
-  useEffect(() => {
-    async function fetchVisits() {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/visits?page=${page}`);
-        if (!res.ok) {
-          throw new Error('Failed to fetch visits');
-        }
-        const data = await res.json();
-        setVisits(data.visits);
-        setTotalPages(data.totalPages);
-      } catch (error) {
-        console.error('Error fetching visits:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const pageParam = searchParams?.page;
+  const parsedPage = Array.isArray(pageParam)
+    ? parseInt(pageParam[0] ?? '1', 10)
+    : parseInt(pageParam ?? '1', 10);
+  const currentPage =
+    Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+  const offset = (currentPage - 1) * VISITS_PER_PAGE;
 
-    fetchVisits();
-  }, [page]);
+  const [visits, totalVisits] = await Promise.all([
+    prisma.visit.findMany({
+      skip: offset,
+      take: VISITS_PER_PAGE,
+      orderBy: { createdAt: 'desc' },
+      where: { userId: +session.user.id },
+      include: { user: { select: { name: true } } },
+    }),
+    prisma.visit.count({
+      where: { userId: +session.user.id },
+    }),
+  ]);
 
-  return (
-    <>
-      {isLoading ? (
-        <div className="flex min-h-[200px] items-center justify-center space-x-2">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      ) : (
-        <>
-          {visits.length === 0 ? (
-            <p className="text-muted-foreground">No visits available.</p>
-          ) : (
-            <ul className="mx-auto w-full max-w-4xl space-y-6">
-              {visits.map((visit) => (
-                <li
-                  key={visit.id}
-                  className="rounded-lg border bg-card p-6 shadow-md"
-                >
-                  <Link
-                    href={`/visits/${visit.id}`}
-                    className="font-semibold text-2xl hover:underline"
-                  >
-                    {visit.title}
-                  </Link>
-                  <p className="text-muted-foreground text-sm">
-                    by {visit.user.name}
-                  </p>
-                  <p className="text-muted-foreground text-xs">
-                    {new Date(visit.createdAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
+  const totalPages = Math.max(1, Math.ceil(totalVisits / VISITS_PER_PAGE));
 
-          {/* Pagination Controls */}
-          <div className="mt-8 flex justify-center space-x-4">
-            {page > 1 && (
-              <Link href={`/visits?page=${page - 1}`}>
-                <Button variant="secondary">Previous</Button>
-              </Link>
-            )}
-            {page < totalPages && (
-              <Link href={`/visits?page=${page + 1}`}>
-                <Button variant="secondary">Next</Button>
-              </Link>
-            )}
-          </div>
-        </>
-      )}
-    </>
-  );
-}
-
-export default function VisitsPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-start p-8">
-      <Suspense
-        fallback={
-          <div className="flex min-h-screen items-center justify-center">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-            <p className="ml-3 text-muted-foreground">Loading page...</p>
-          </div>
-        }
-      >
-        <VisitsList />
-      </Suspense>
+      {visits.length === 0 ? (
+        <p className="text-muted-foreground">No visits available.</p>
+      ) : (
+        <ul className="mx-auto w-full max-w-4xl space-y-6">
+          {visits.map((visit) => (
+            <li
+              key={visit.id}
+              className="rounded-lg border bg-card p-6 shadow-md"
+            >
+              <Link
+                href={`/visits/${visit.id}`}
+                className="font-semibold text-2xl hover:underline"
+              >
+                {visit.title}
+              </Link>
+              <p className="text-muted-foreground text-sm">
+                by {visit.user.name}
+              </p>
+              <p className="text-muted-foreground text-xs">
+                {new Date(visit.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Pagination className="mt-8">
+        <PaginationContent>
+          {currentPage > 1 ? (
+            <PaginationItem>
+              <PaginationPrevious href={`/visits?page=${currentPage - 1}`} />
+            </PaginationItem>
+          ) : null}
+
+          {Array.from({ length: totalPages }, (_, index) => {
+            const page = index + 1;
+            return (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  href={`/visits?page=${page}`}
+                  isActive={page === currentPage}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+
+          {currentPage < totalPages ? (
+            <PaginationItem>
+              <PaginationNext href={`/visits?page=${currentPage + 1}`} />
+            </PaginationItem>
+          ) : null}
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

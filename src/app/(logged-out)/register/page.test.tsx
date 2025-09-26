@@ -1,4 +1,10 @@
-import { cleanup, render, screen, waitFor, within } from '@testing-library/react';
+import {
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { registerUser } from './actions';
@@ -58,9 +64,8 @@ describe('RegisterPage', () => {
     const emailInput = withinFieldset.getByLabelText(/email/i);
     const nameInput = withinFieldset.getByLabelText(/name/i);
     const passwordInput = withinFieldset.getByLabelText(/^password$/i);
-    const passwordConfirmInput = withinFieldset.getByLabelText(
-      /password confirm/i,
-    );
+    const passwordConfirmInput =
+      withinFieldset.getByLabelText(/password confirm/i);
     const submitButton = withinFieldset.getByRole('button', {
       name: /register/i,
     });
@@ -104,9 +109,8 @@ describe('RegisterPage', () => {
     const emailInput = withinFieldset.getByLabelText(/email/i);
     const nameInput = withinFieldset.getByLabelText(/name/i);
     const passwordInput = withinFieldset.getByLabelText(/^password$/i);
-    const passwordConfirmInput = withinFieldset.getByLabelText(
-      /password confirm/i,
-    );
+    const passwordConfirmInput =
+      withinFieldset.getByLabelText(/password confirm/i);
     const submitButton = withinFieldset.getByRole('button', {
       name: /register/i,
     });
@@ -151,9 +155,8 @@ describe('RegisterPage', () => {
     const emailInput = withinFieldset.getByLabelText(/email/i);
     const nameInput = withinFieldset.getByLabelText(/name/i);
     const passwordInput = withinFieldset.getByLabelText(/^password$/i);
-    const passwordConfirmInput = withinFieldset.getByLabelText(
-      /password confirm/i,
-    );
+    const passwordConfirmInput =
+      withinFieldset.getByLabelText(/password confirm/i);
     const submitButton = withinFieldset.getByRole('button', {
       name: /register/i,
     });

@@ -7,8 +7,6 @@ import prisma from '@/lib/prisma';
 export async function createVisit(formData: FormData) {
   const session = await auth();
 
-  console.log('🚀 ~ createVisit ~ session:', session);
-
   if (!session?.user?.id) {
     throw new Error('You must be logged in to create a visit');
   }

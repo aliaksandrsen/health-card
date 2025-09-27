@@ -6,12 +6,14 @@ import { auth } from '@/auth';
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import prisma from '@/lib/prisma';
+import { fetchVisits } from './actions';
+import { buildPaginationItems } from './utils';
 
 const VISITS_PER_PAGE = 5;
 
@@ -39,20 +41,14 @@ export default async function VisitsPage({
     Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
   const offset = (currentPage - 1) * VISITS_PER_PAGE;
 
-  const [visits, totalVisits] = await Promise.all([
-    prisma.visit.findMany({
-      skip: offset,
-      take: VISITS_PER_PAGE,
-      orderBy: { createdAt: 'desc' },
-      where: { userId: +session.user.id },
-      include: { user: { select: { name: true } } },
-    }),
-    prisma.visit.count({
-      where: { userId: +session.user.id },
-    }),
-  ]);
+  const { visits, totalVisits } = await fetchVisits({
+    userId: +session.user.id,
+    skip: offset,
+    take: VISITS_PER_PAGE,
+  });
 
   const totalPages = Math.max(1, Math.ceil(totalVisits / VISITS_PER_PAGE));
+  const paginationItems = buildPaginationItems(currentPage, totalPages);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start p-8">
@@ -94,15 +90,27 @@ export default async function VisitsPage({
             </PaginationItem>
           ) : null}
 
-          {Array.from({ length: totalPages }, (_, index) => {
-            const page = index + 1;
-            return (
-              <PaginationItem key={page}>
-                <PaginationLink
-                  href={`/visits?page=${page}`}
-                  isActive={page === currentPage}
+          {paginationItems.map((item, index) => {
+            if (item === 'ellipsis') {
+              return (
+                <PaginationItem
+                  key={`ellipsis-${
+                    // biome-ignore lint/suspicious/noArrayIndexKey : it's static
+                    index
+                  }`}
+                  aria-hidden
                 >
-                  {page}
+                  <PaginationEllipsis />
+                </PaginationItem>
+              );
+            }
+
+            const pageHref = `/visits?page=${item}`;
+
+            return (
+              <PaginationItem key={item}>
+                <PaginationLink href={pageHref} isActive={item === currentPage}>
+                  {item}
                 </PaginationLink>
               </PaginationItem>
             );

@@ -17,26 +17,20 @@ import { buildPaginationItems } from './utils';
 
 const VISITS_PER_PAGE = 5;
 
-type VisitsPageSearchParams = {
-  [key: string]: string | string[] | undefined;
-  page?: string | string[];
-};
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function VisitsPage({
-  searchParams,
-}: {
-  searchParams?: VisitsPageSearchParams;
+export default async function VisitsPage(props: {
+  searchParams: SearchParams;
 }) {
   const session = await auth();
 
   if (!session?.user?.id) {
     redirect('/login');
   }
+  const { page } = await props.searchParams;
+  const pageStr = Array.isArray(page) ? page[0] : page;
 
-  const pageParam = searchParams?.page;
-  const parsedPage = Array.isArray(pageParam)
-    ? parseInt(pageParam[0] ?? '1', 10)
-    : parseInt(pageParam ?? '1', 10);
+  const parsedPage = parseInt(pageStr ?? '1', 10);
   const currentPage =
     Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
   const offset = (currentPage - 1) * VISITS_PER_PAGE;

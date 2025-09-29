@@ -32,7 +32,7 @@ export const VisitPreviewCard = async ({
             })}
           </p>
           <p className="line-clamp-2 text-muted-foreground leading-relaxed">
-            {visit.content || 'No content available.'}
+            {visit.content}
           </p>
         </CardContent>
       </Card>

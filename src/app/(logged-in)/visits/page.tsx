@@ -3,7 +3,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
-import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import {
   Pagination,
   PaginationContent,
@@ -13,6 +12,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import { fetchVisits } from './actions';
 import { VISITS_PER_PAGE } from './const';
 import { buildPaginationItems } from './utils';

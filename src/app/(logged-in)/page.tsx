@@ -1,30 +1,40 @@
 'use server';
 
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
+import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
 
+const PREVIEW_COUNT = 6;
+
 export default async function Home() {
   const session = await auth();
-  const userId = session?.user?.id ? +session.user.id : null;
+
+  if (!session?.user) {
+    redirect('/login');
+  }
+
+  const userId = +session.user.id;
 
   const visits = userId
     ? await prisma.visit.findMany({
         orderBy: { createdAt: 'desc' },
-        take: 6,
+        take: PREVIEW_COUNT,
         where: { userId: userId },
-        include: { user: { select: { name: true } } },
       })
     : [];
 
+  const hasVisits = visits.length > 0;
+
   return (
     <div className="flex flex-1 flex-col items-center p-8">
-      {visits && visits.length > 0 && (
+      {hasVisits ? (
         <div className="mb-8 grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
           {visits.map((visit) => (
             <Link key={visit.id} href={`/visits/${visit.id}`} className="group">
-              <Card className="transition-shadow hover:shadow-md">
+              <Card className="transition-shadow hover:shadow-lg">
                 <CardHeader>
                   <CardTitle>{visit.title}</CardTitle>
                 </CardHeader>
@@ -44,6 +54,8 @@ export default async function Home() {
             </Link>
           ))}
         </div>
+      ) : (
+        <EmptyVisitsFallback />
       )}
     </div>
   );

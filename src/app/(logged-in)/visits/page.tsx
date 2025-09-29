@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
+import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
 import {
   Pagination,
   PaginationContent,
@@ -46,7 +47,7 @@ export default async function VisitsPage(props: {
   return (
     <div className="flex flex-1 flex-col items-center justify-start p-8">
       {visits.length === 0 ? (
-        <p className="text-muted-foreground">No visits available.</p>
+        <EmptyVisitsFallback />
       ) : (
         <ul className="mx-auto w-full max-w-4xl space-y-6">
           {visits.map((visit) => (

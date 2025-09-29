@@ -5,8 +5,7 @@ import { auth } from '@/auth';
 import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
 import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import prisma from '@/lib/prisma';
-
-const PREVIEW_COUNT = 6;
+import { PREVIEW_COUNT } from './const';
 
 export default async function Home() {
   const session = await auth();

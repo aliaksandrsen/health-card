@@ -1,4 +1,4 @@
-'use client';
+'use server';
 
 import Form from 'next/form';
 import { Button } from '@/components/ui/button';
@@ -8,10 +8,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createVisit } from './actions';
 
-export default function NewVisit() {
+export default async function NewVisit() {
   return (
-    <div className="mx-auto max-w-2xl p-4">
-      <Card>
+    <div className="flex justify-center p-8">
+      <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle>Create New Visit</CardTitle>
         </CardHeader>
@@ -36,7 +36,7 @@ export default function NewVisit() {
                 rows={6}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full cursor-pointer">
               Create Visit
             </Button>
           </Form>

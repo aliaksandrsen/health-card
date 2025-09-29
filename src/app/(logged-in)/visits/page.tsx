@@ -3,19 +3,10 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import { fetchVisits } from './actions';
 import { VISITS_PER_PAGE } from './const';
-import { buildPaginationItems } from './utils';
+import { VisitsPagination } from './VisitsPagination';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -42,7 +33,6 @@ export default async function VisitsPage(props: {
   });
 
   const totalPages = Math.max(1, Math.ceil(totalVisits / VISITS_PER_PAGE));
-  const paginationItems = buildPaginationItems(currentPage, totalPages);
 
   return (
     <div className="flex flex-1 flex-col items-center justify-start p-8">
@@ -58,47 +48,7 @@ export default async function VisitsPage(props: {
         </ul>
       )}
 
-      <Pagination className="mt-8">
-        <PaginationContent>
-          {currentPage > 1 ? (
-            <PaginationItem>
-              <PaginationPrevious href={`/visits?page=${currentPage - 1}`} />
-            </PaginationItem>
-          ) : null}
-
-          {paginationItems.map((item, index) => {
-            if (item === 'ellipsis') {
-              return (
-                <PaginationItem
-                  key={`ellipsis-${
-                    // biome-ignore lint/suspicious/noArrayIndexKey : it's static
-                    index
-                  }`}
-                  aria-hidden
-                >
-                  <PaginationEllipsis />
-                </PaginationItem>
-              );
-            }
-
-            const pageHref = `/visits?page=${item}`;
-
-            return (
-              <PaginationItem key={item}>
-                <PaginationLink href={pageHref} isActive={item === currentPage}>
-                  {item}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-
-          {currentPage < totalPages ? (
-            <PaginationItem>
-              <PaginationNext href={`/visits?page=${currentPage + 1}`} />
-            </PaginationItem>
-          ) : null}
-        </PaginationContent>
-      </Pagination>
+      <VisitsPagination currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }

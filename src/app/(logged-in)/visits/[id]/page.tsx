@@ -1,32 +1,22 @@
 'use server';
 
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import prisma from '@/lib/prisma';
+import { deleteVisit } from './actions';
 
-export default async function Visit({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
   const session = await auth();
   if (!session?.user?.id) {
     notFound();
   }
 
   const { id } = await params;
-  const visitId = parseInt(id, 10);
 
   const visit = await prisma.visit.findFirst({
-    where: { id: visitId, userId: +session.user.id },
+    where: { id: +id, userId: +session.user.id },
     include: {
       user: true,
     },
@@ -36,45 +26,19 @@ export default async function Visit({
     notFound();
   }
 
-  // Server action to delete the visit
-  async function deleteVisit() {
-    'use server';
-    const session = await auth();
-    if (!session?.user?.id) {
-      notFound();
-    }
-
-    // Enforce ownership at deletion time
-    await prisma.visit.deleteMany({
-      where: {
-        id: visitId,
-        userId: +session.user.id,
-      },
-    });
-
-    redirect('/visits');
-  }
+  const deleteVisitAction = deleteVisit.bind(null, { visitId: visit.id });
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-8">
+    <div className="flex min-h-screen flex-col items-center p-8">
       <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle className="text-4xl">{visit.title}</CardTitle>
-          <CardDescription>
-            by <span className="font-medium">{visit.user.name}</span>
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6 text-lg leading-relaxed">
-            {visit.content ? (
-              <p>{visit.content}</p>
-            ) : (
-              <p className="text-muted-foreground italic">
-                No content available for this visit.
-              </p>
-            )}
+            <p>{visit.content}</p>
           </div>
-          <form action={deleteVisit} className="mt-6">
+          <form action={deleteVisitAction} className="mt-6">
             <Button type="submit" variant="destructive">
               Delete Visit
             </Button>

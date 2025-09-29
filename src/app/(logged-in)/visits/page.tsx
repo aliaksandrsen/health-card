@@ -13,9 +13,8 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { fetchVisits } from './actions';
+import { VISITS_PER_PAGE } from './const';
 import { buildPaginationItems } from './utils';
-
-const VISITS_PER_PAGE = 5;
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -61,9 +60,7 @@ export default async function VisitsPage(props: {
               >
                 {visit.title}
               </Link>
-              <p className="text-muted-foreground text-sm">
-                by {visit.user.name}
-              </p>
+
               <p className="text-muted-foreground text-xs">
                 {new Date(visit.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',

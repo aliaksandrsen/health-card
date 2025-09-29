@@ -44,7 +44,7 @@ export default async function VisitsPage(props: {
   const paginationItems = buildPaginationItems(currentPage, totalPages);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start p-8">
+    <div className="flex flex-1 flex-col items-center justify-start p-8">
       {visits.length === 0 ? (
         <p className="text-muted-foreground">No visits available.</p>
       ) : (

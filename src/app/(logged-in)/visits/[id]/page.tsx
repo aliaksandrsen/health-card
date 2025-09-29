@@ -29,7 +29,7 @@ export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
   const deleteVisitAction = deleteVisit.bind(null, { visitId: visit.id });
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-8">
+    <div className="flex flex-1 flex-col items-center p-8">
       <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle className="text-4xl">{visit.title}</CardTitle>

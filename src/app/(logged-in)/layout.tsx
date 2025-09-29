@@ -14,9 +14,9 @@ export default async function LoggedInLayout({
   }
 
   return (
-    <div>
+    <div className="flex min-h-screen flex-col bg-background">
       <Header user={session.user} />
-      <main className="flex-1">{children}</main>
+      <main className="flex flex-1 flex-col">{children}</main>
     </div>
   );
 }

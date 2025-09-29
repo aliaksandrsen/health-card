@@ -1,15 +1,10 @@
 'use server';
 
 import { LogOut } from 'lucide-react';
-import { signOut } from '@/auth';
 import { Button } from '@/components/ui/button';
+import { signOutAction } from './actions';
 
-async function signOutAction() {
-  'use server';
-  await signOut({ redirectTo: '/login' });
-}
-
-export async function SignOutButton() {
+export const SignOutButton = async () => {
   return (
     <form action={signOutAction}>
       <Button type="submit" className="cursor-pointer" variant="outline">
@@ -17,4 +12,4 @@ export async function SignOutButton() {
       </Button>
     </form>
   );
-}
+};

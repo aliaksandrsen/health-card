@@ -12,7 +12,7 @@ type HeaderProps = {
   };
 };
 
-export default async function Header({ user }: HeaderProps) {
+export const Header = async ({ user }: HeaderProps) => {
   return (
     <header className="w-full border-b bg-background px-8 py-4">
       <nav className="flex items-center justify-between">
@@ -38,4 +38,4 @@ export default async function Header({ user }: HeaderProps) {
       </nav>
     </header>
   );
-}
+};

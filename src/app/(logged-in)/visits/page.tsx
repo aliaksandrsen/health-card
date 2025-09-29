@@ -1,9 +1,9 @@
 'use server';
 
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
+import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import {
   Pagination,
   PaginationContent,
@@ -51,24 +51,8 @@ export default async function VisitsPage(props: {
       ) : (
         <ul className="mx-auto w-full max-w-4xl space-y-6">
           {visits.map((visit) => (
-            <li
-              key={visit.id}
-              className="rounded-lg border bg-card p-6 shadow-md"
-            >
-              <Link
-                href={`/visits/${visit.id}`}
-                className="font-semibold text-2xl hover:underline"
-              >
-                {visit.title}
-              </Link>
-
-              <p className="text-muted-foreground text-xs">
-                {new Date(visit.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </p>
+            <li key={visit.id}>
+              <VisitPreviewCard visit={visit} />
             </li>
           ))}
         </ul>

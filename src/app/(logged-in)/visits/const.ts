@@ -1,1 +1,1 @@
-export const VISITS_PER_PAGE = 6;
+export const VISITS_PER_PAGE = 4;

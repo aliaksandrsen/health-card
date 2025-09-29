@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { VISITS_PER_PAGE } from './const';
 
@@ -11,12 +12,19 @@ export default function VisitsLoading() {
               // biome-ignore lint/suspicious/noArrayIndexKey: ok
               index
             }`}
-            className="rounded-lg border bg-card p-6 shadow-md"
           >
-            <Skeleton className="h-6 w-3/4" />
-            <div className="mt-4 space-y-2 text-muted-foreground text-sm">
-              <Skeleton className="h-2 w-32" />
-            </div>
+            <Card className="shadow-md transition-shadow">
+              <CardHeader>
+                <Skeleton className="h-6 w-3/4" />
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <Skeleton className="h-3 w-28" />
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                </div>
+              </CardContent>
+            </Card>
           </li>
         ))}
       </ul>

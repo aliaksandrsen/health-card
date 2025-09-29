@@ -32,6 +32,7 @@ export default async function NewVisit() {
               <Textarea
                 id="content"
                 name="content"
+                required
                 placeholder="Write your visits content here ..."
                 rows={6}
               />

@@ -8,7 +8,7 @@ type FetchVisitsInput = {
   take: number;
 };
 
-export async function fetchVisits({ userId, skip, take }: FetchVisitsInput) {
+export const fetchVisits = async ({ userId, skip, take }: FetchVisitsInput) => {
   const [visits, totalVisits] = await Promise.all([
     prisma.visit.findMany({
       skip,
@@ -23,4 +23,4 @@ export async function fetchVisits({ userId, skip, take }: FetchVisitsInput) {
   ]);
 
   return { visits, totalVisits };
-}
+};

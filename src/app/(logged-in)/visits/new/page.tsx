@@ -1,5 +1,3 @@
-'use server';
-
 import Form from 'next/form';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { createVisit } from './actions';
 
-export default async function NewVisit() {
+export default function NewVisit() {
   return (
     <div className="flex justify-center p-8">
       <Card className="w-full max-w-3xl">

@@ -1,5 +1,3 @@
-'use server';
-
 import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';

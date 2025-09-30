@@ -1,5 +1,3 @@
-'use server';
-
 import {
   Pagination,
   PaginationContent,
@@ -16,7 +14,7 @@ interface VisitsPaginationProps {
   totalPages: number;
 }
 
-export const VisitsPagination = async ({
+export const VisitsPagination = ({
   currentPage,
   totalPages,
 }: VisitsPaginationProps) => {

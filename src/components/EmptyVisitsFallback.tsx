@@ -1,5 +1,3 @@
-'use server';
-
 import { Stethoscope } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export const EmptyVisitsFallback = async () => {
+export const EmptyVisitsFallback = () => {
   return (
     <Card className="w-full max-w-xl border-dashed text-center">
       <CardHeader className="flex flex-col items-center gap-4">

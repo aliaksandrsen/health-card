@@ -1,5 +1,3 @@
-'use server';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { SignOutButton } from './SignOutButton';
@@ -12,7 +10,7 @@ type HeaderProps = {
   };
 };
 
-export const Header = async ({ user }: HeaderProps) => {
+export const Header = ({ user }: HeaderProps) => {
   return (
     <header className="w-full border-b bg-background px-8 py-4">
       <nav className="flex items-center justify-between">

@@ -1,5 +1,3 @@
-'use server';
-
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -13,7 +11,7 @@ type VisitPreviewCardProps = {
   href?: string;
 };
 
-export const VisitPreviewCard = async ({
+export const VisitPreviewCard = ({
   visit,
   href = `/visits/${visit.id}`,
 }: VisitPreviewCardProps) => {

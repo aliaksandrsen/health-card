@@ -11,7 +11,7 @@ export const signOutAction = async () => {
 export const getRecentVisits = async () => {
   const session = await auth();
 
-  if (!session?.user?.id) {
+  if (!session?.user) {
     throw new Error('Unauthorized');
   }
 

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { deleteVisit, getVisit } from './actions';
+import { deleteVisit, getVisit } from '../actions';
 
 export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
   const { id } = await params;

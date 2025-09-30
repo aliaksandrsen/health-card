@@ -1,23 +1,17 @@
 import { notFound } from 'next/navigation';
-import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { deleteVisit, getVisit } from './actions';
 
 export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    notFound();
-  }
-
   const { id } = await params;
-  const visit = await getVisit({ visitId: +id, userId: +session.user.id });
+  const visit = await getVisit(+id);
 
   if (!visit) {
     notFound();
   }
 
-  const deleteVisitAction = deleteVisit.bind(null, { visitId: visit.id });
+  const deleteVisitAction = deleteVisit.bind(null, visit.id);
 
   return (
     <div className="flex flex-1 flex-col items-center p-8">

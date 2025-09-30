@@ -1,4 +1,3 @@
-import Form from 'next/form';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,7 +13,7 @@ export default function NewVisit() {
           <CardTitle>Create New Visit</CardTitle>
         </CardHeader>
         <CardContent>
-          <Form action={createVisit} className="space-y-6">
+          <form action={createVisit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
@@ -38,7 +37,7 @@ export default function NewVisit() {
             <Button type="submit" className="w-full cursor-pointer">
               Create Visit
             </Button>
-          </Form>
+          </form>
         </CardContent>
       </Card>
     </div>

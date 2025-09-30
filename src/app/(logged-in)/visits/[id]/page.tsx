@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation';
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import prisma from '@/lib/prisma';
-import { deleteVisit } from './actions';
+import { deleteVisit, getVisit } from './actions';
 
 export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
   const session = await auth();
@@ -12,13 +11,7 @@ export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
   }
 
   const { id } = await params;
-
-  const visit = await prisma.visit.findFirst({
-    where: { id: +id, userId: +session.user.id },
-    include: {
-      user: true,
-    },
-  });
+  const visit = await getVisit({ visitId: +id, userId: +session.user.id });
 
   if (!visit) {
     notFound();

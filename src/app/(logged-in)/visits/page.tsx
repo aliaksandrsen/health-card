@@ -29,13 +29,11 @@ export default async function VisitsPage(props: {
       {visits.length === 0 ? (
         <EmptyVisitsFallback />
       ) : (
-        <ul className="mx-auto w-full max-w-4xl space-y-6">
+        <div className="mx-auto w-full max-w-4xl space-y-6">
           {visits.map((visit) => (
-            <li key={visit.id}>
-              <VisitPreviewCard visit={visit} />
-            </li>
+            <VisitPreviewCard key={visit.id} visit={visit} />
           ))}
-        </ul>
+        </div>
       )}
 
       <VisitsPagination currentPage={currentPage} totalPages={totalPages} />

@@ -1,10 +1,10 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createVisit } from './actions';
+import { createVisit } from '../actions';
 import NewVisit from './page';
 
-vi.mock('./actions', () => ({
+vi.mock('../actions', () => ({
   createVisit: vi.fn(),
 }));
 

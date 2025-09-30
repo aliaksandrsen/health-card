@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { notFound } from 'next/navigation';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getVisit } from './actions';
+import { getVisit } from '../actions';
 import Visit from './page';
 
 vi.mock('next/navigation', () => ({
   notFound: vi.fn(),
 }));
 
-vi.mock('./actions', () => ({
+vi.mock('../actions', () => ({
   getVisit: vi.fn(),
   deleteVisit: vi.fn(),
 }));

@@ -24,7 +24,11 @@ export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
             <p>{visit.content}</p>
           </div>
           <form action={deleteVisitAction} className="mt-6">
-            <Button type="submit" variant="destructive">
+            <Button
+              className="cursor-pointer"
+              type="submit"
+              variant="destructive"
+            >
               Delete Visit
             </Button>
           </form>

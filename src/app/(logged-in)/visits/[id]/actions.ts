@@ -27,7 +27,7 @@ export const deleteVisit = async (visitId: number) => {
 
   const userId = +session.user.id;
 
-  await prisma.visit.deleteMany({
+  await prisma.visit.delete({
     where: {
       id: visitId,
       userId,

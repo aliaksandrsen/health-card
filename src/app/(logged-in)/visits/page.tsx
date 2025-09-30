@@ -1,5 +1,3 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
 import { EmptyVisitsFallback } from '@/components/EmptyVisitsFallback';
 import { VisitPreviewCard } from '@/components/VisitPreviewCard';
 import { fetchVisits } from './actions';
@@ -11,11 +9,6 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 export default async function VisitsPage(props: {
   searchParams: SearchParams;
 }) {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    redirect('/login');
-  }
   const { page } = await props.searchParams;
   const pageStr = Array.isArray(page) ? page[0] : page;
 
@@ -25,7 +18,6 @@ export default async function VisitsPage(props: {
   const offset = (currentPage - 1) * VISITS_PER_PAGE;
 
   const { visits, totalVisits } = await fetchVisits({
-    userId: +session.user.id,
     skip: offset,
     take: VISITS_PER_PAGE,
   });

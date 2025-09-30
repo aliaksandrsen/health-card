@@ -1,14 +1,22 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 
 type FetchVisitsInput = {
-  userId: number;
   skip: number;
   take: number;
 };
 
-export const fetchVisits = async ({ userId, skip, take }: FetchVisitsInput) => {
+export const fetchVisits = async ({ skip, take }: FetchVisitsInput) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  const userId = +session.user.id;
+
   const [visits, totalVisits] = await Promise.all([
     prisma.visit.findMany({
       skip,

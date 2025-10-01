@@ -3,7 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { deleteVisit, getVisit } from '../actions';
 
-export default async function Visit({ params }: PageProps<'/visits/[id]'>) {
+export default async function Visit({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const visit = await getVisit(+id);
 

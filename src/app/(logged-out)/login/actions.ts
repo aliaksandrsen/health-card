@@ -1,40 +1,40 @@
-'use server';
+"use server";
 
-import z from 'zod';
-import { signIn } from '@/auth';
+import z from "zod";
+import { signIn } from "@/auth";
 
 export const loginWithCredentials = async ({
-  email,
-  password,
+	email,
+	password,
 }: {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 }) => {
-  const loginSchema = z.object({
-    email: z.email(),
-    password: z.string().min(4),
-  });
+	const loginSchema = z.object({
+		email: z.email(),
+		password: z.string().min(4),
+	});
 
-  const loginValidation = loginSchema.safeParse({
-    email,
-    password,
-  });
+	const loginValidation = loginSchema.safeParse({
+		email,
+		password,
+	});
 
-  if (!loginValidation.success) {
-    return {
-      error: loginValidation.error.issues[0]?.message ?? 'An error occurred',
-    };
-  }
+	if (!loginValidation.success) {
+		return {
+			error: loginValidation.error.issues[0]?.message ?? "An error occurred",
+		};
+	}
 
-  try {
-    await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
-  } catch {
-    return {
-      error: 'Incorrect email or password',
-    };
-  }
+	try {
+		await signIn("credentials", {
+			email,
+			password,
+			redirect: false,
+		});
+	} catch {
+		return {
+			error: "Incorrect email or password",
+		};
+	}
 };

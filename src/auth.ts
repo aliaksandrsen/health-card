@@ -1,58 +1,58 @@
-import bcrypt from 'bcrypt';
-import NextAuth, { type User as NextAuthUser } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import prisma from '@/lib/prisma';
-import { authConfig } from '../auth.config';
+import bcrypt from "bcrypt";
+import NextAuth, { type User as NextAuthUser } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "@/lib/prisma";
+import { authConfig } from "../auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  ...authConfig,
-  providers: [
-    CredentialsProvider({
-      authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Invalid credentials');
-        }
+	...authConfig,
+	providers: [
+		CredentialsProvider({
+			authorize: async (credentials) => {
+				if (!credentials?.email || !credentials?.password) {
+					throw new Error("Invalid credentials");
+				}
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+				const user = await prisma.user.findUnique({
+					where: { email: credentials.email as string },
+				});
 
-        if (!user) {
-          throw new Error('Incorrect credentials');
-        }
+				if (!user) {
+					throw new Error("Incorrect credentials");
+				}
 
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password as string,
-          user.password ?? '',
-        );
+				const isCorrectPassword = await bcrypt.compare(
+					credentials.password as string,
+					user.password ?? "",
+				);
 
-        if (!isCorrectPassword) {
-          throw new Error('Invalid credentials');
-        }
+				if (!isCorrectPassword) {
+					throw new Error("Invalid credentials");
+				}
 
-        const authUser: NextAuthUser = {
-          id: user.id.toString(),
-          name: user.name,
-          email: user.email,
-        };
-        return authUser;
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, id: token.id ?? user?.id };
-    },
-    async session({ session, token }) {
-      // Ensure required fields on session.user per module augmentation
-      const user = {
-        id: (token.id as string) ?? '',
-        name: session.user?.name ?? '',
-        email: session.user?.email ?? '',
-        image: session.user?.image ?? null,
-      };
-      return { ...session, user };
-    },
-    ...authConfig.callbacks,
-  },
+				const authUser: NextAuthUser = {
+					id: user.id.toString(),
+					name: user.name,
+					email: user.email,
+				};
+				return authUser;
+			},
+		}),
+	],
+	callbacks: {
+		async jwt({ token, user }) {
+			return { ...token, id: token.id ?? user?.id };
+		},
+		async session({ session, token }) {
+			// Ensure required fields on session.user per module augmentation
+			const user = {
+				id: (token.id as string) ?? "",
+				name: session.user?.name ?? "",
+				email: session.user?.email ?? "",
+				image: session.user?.image ?? null,
+			};
+			return { ...session, user };
+		},
+		...authConfig.callbacks,
+	},
 });

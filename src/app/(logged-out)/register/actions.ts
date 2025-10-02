@@ -1,62 +1,62 @@
-'use server';
+"use server";
 
-import { Prisma } from '@prisma/client';
-import { hash } from 'bcrypt';
-import { z } from 'zod';
-import { passwordMatchSchema } from '@/app/validation/passwordMatchSchema';
-import prisma from '@/lib/prisma';
+import { Prisma } from "@prisma/client";
+import { hash } from "bcrypt";
+import { z } from "zod";
+import { passwordMatchSchema } from "@/app/validation/passwordMatchSchema";
+import prisma from "@/lib/prisma";
 
 const newUserSchema = z
-  .object({
-    email: z.email(),
-    name: z.string().min(2).max(20),
-  })
-  .and(passwordMatchSchema);
+	.object({
+		email: z.email(),
+		name: z.string().min(2).max(20),
+	})
+	.and(passwordMatchSchema);
 
 export const registerUser = async ({
-  email,
-  name,
-  password,
-  passwordConfirm,
+	email,
+	name,
+	password,
+	passwordConfirm,
 }: {
-  email: string;
-  name: string;
-  password: string;
-  passwordConfirm: string;
+	email: string;
+	name: string;
+	password: string;
+	passwordConfirm: string;
 }) => {
-  try {
-    const newUserValues = newUserSchema.safeParse({
-      email,
-      name,
-      password,
-      passwordConfirm,
-    });
+	try {
+		const newUserValues = newUserSchema.safeParse({
+			email,
+			name,
+			password,
+			passwordConfirm,
+		});
 
-    if (!newUserValues.success) {
-      return {
-        error: newUserValues.error.issues[0]?.message ?? 'An error occurred',
-      };
-    }
+		if (!newUserValues.success) {
+			return {
+				error: newUserValues.error.issues[0]?.message ?? "An error occurred",
+			};
+		}
 
-    const hashedPassword = await hash(password, 10);
+		const hashedPassword = await hash(password, 10);
 
-    await prisma.user.create({
-      data: {
-        name: newUserValues.data.name,
-        email: newUserValues.data.email,
-        password: hashedPassword,
-      },
-    });
-  } catch (e: unknown) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === 'P2002') {
-        return {
-          error: 'An account is already registered with this email address',
-        };
-      }
-    }
-    return {
-      error: 'An error occurred.',
-    };
-  }
+		await prisma.user.create({
+			data: {
+				name: newUserValues.data.name,
+				email: newUserValues.data.email,
+				password: hashedPassword,
+			},
+		});
+	} catch (e: unknown) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			if (e.code === "P2002") {
+				return {
+					error: "An account is already registered with this email address",
+				};
+			}
+		}
+		return {
+			error: "An error occurred.",
+		};
+	}
 };

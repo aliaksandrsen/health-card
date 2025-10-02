@@ -36,4 +36,6 @@ Set the following keys in `.env`:
 - Stick to existing UI primitives and the `cn` helper in `src/lib/utils.ts` for composing class names.
 - Keep Prisma-related logic inside server contexts; the client singleton already guards against hot-reload leaks.
 - Tests use Vitest with Testing Library; place new test files next to their targets using the `.test.tsx` suffix.
+- When writing unit tests, assign selectors to variables instead of embedding them directly in `expect` expressions.
+- When possible, avoid mocking other UI components so tests stay closer to full integration behavior.
 - When adding dependencies, use `npm` to keep `package-lock.json` in sync.

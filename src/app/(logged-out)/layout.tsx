@@ -1,16 +1,16 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export default async function LoggedOutLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  const session = await auth();
+	const session = await auth();
 
-  if (session?.user?.id) {
-    redirect('/');
-  }
+	if (session?.user?.id) {
+		redirect("/");
+	}
 
-  return <>{children}</>;
+	return <>{children}</>;
 }

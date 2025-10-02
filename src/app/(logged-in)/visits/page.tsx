@@ -25,7 +25,7 @@ export default async function VisitsPage(props: {
 	const totalPages = Math.max(1, Math.ceil(totalVisits / VISITS_PER_PAGE));
 
 	return (
-		<div className="flex flex-1 flex-col items-center justify-start p-8">
+		<div className="flex w-full flex-1 flex-col items-center">
 			{visits.length === 0 ? (
 				<EmptyVisitsFallback />
 			) : (

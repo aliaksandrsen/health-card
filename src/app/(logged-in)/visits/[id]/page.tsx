@@ -16,9 +16,8 @@ export default async function Visit({
 	}
 
 	const deleteVisitAction = deleteVisit.bind(null, visit.id);
-
 	return (
-		<div className="flex flex-1 flex-col items-center p-8">
+		<div className="flex flex-1 flex-col items-center">
 			<Card className="w-full max-w-3xl">
 				<CardHeader>
 					<CardTitle className="text-4xl">{visit.title}</CardTitle>

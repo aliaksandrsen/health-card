@@ -4,7 +4,7 @@ import { VISITS_PER_PAGE } from "./const";
 
 export default function VisitsLoading() {
 	return (
-		<div className="flex flex-1 flex-col items-center justify-start p-8">
+		<div className="flex flex-1 flex-col items-center justify-start">
 			<ul className="mx-auto w-full max-w-4xl space-y-6">
 				{Array.from({ length: VISITS_PER_PAGE }).map((_, index) => (
 					<li

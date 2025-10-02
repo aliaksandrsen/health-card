@@ -11,7 +11,7 @@ import {
 
 export default function VisitNotFound() {
 	return (
-		<div className="flex flex-1 flex-col items-center justify-center bg-muted p-6">
+		<div className="flex flex-1 flex-col items-center justify-start p-6">
 			<Card className="w-full max-w-lg border-destructive/30 bg-card shadow-lg">
 				<CardHeader className="flex items-center gap-4 text-center">
 					<div className="rounded-full bg-destructive/10 p-3 text-destructive">

@@ -41,17 +41,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			return { ...token, id: token.id ?? user?.id };
+			// User is available during sign-in
+			if (user) {
+				token.id = user.id;
+			}
+			return token;
 		},
 		async session({ session, token }) {
-			// Ensure required fields on session.user per module augmentation
-			const user = {
-				id: (token.id as string) ?? "",
-				name: session.user?.name ?? "",
-				email: session.user?.email ?? "",
-				image: session.user?.image ?? null,
-			};
-			return { ...session, user };
+			session.user.id = token.id as string;
+
+			return session;
 		},
 		...authConfig.callbacks,
 	},

@@ -48,7 +48,9 @@
 		"lint": "biome check",
 		"format": "biome format --write",
 		"test": "vitest",
-		"typecheck": "tsc -noEmit"
+		"typecheck": "tsc -noEmit",
+		"postinstall": "prisma generate",
+		"migrate:deploy": "prisma migrate deploy"
 	},
 	"version": "0.1.0"
 }

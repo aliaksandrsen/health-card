@@ -1,153 +1,144 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { hash } from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
-	// Create 5 users with hashed passwords
-	const users = await Promise.all([
-		prisma.user.create({
-			data: {
-				email: "alice@example.com",
-				name: "Alice",
-				password: await bcrypt.hash("password123", 10),
-			},
-		}),
-		prisma.user.create({
-			data: {
-				email: "bob@example.com",
-				name: "Bob",
-				password: await bcrypt.hash("password123", 10),
-			},
-		}),
-		prisma.user.create({
-			data: {
-				email: "charlie@example.com",
-				name: "Charlie",
-				password: await bcrypt.hash("password123", 10),
-			},
-		}),
-		prisma.user.create({
-			data: {
-				email: "diana@example.com",
-				name: "Diana",
-				password: await bcrypt.hash("password123", 10),
-			},
-		}),
-		prisma.user.create({
-			data: {
-				email: "edward@example.com",
-				name: "Edward",
-				password: await bcrypt.hash("password123", 10),
-			},
-		}),
-	]);
+	const alex = await prisma.user.create({
+		data: {
+			email: "puskin1914@gmail.com",
+			name: "Alex Dev",
+			password: await hash("1234", 10),
+		},
+	});
 
-	const userIdMapping = {
-		alice: users[0].id,
-		bob: users[1].id,
-		charlie: users[2].id,
-		diana: users[3].id,
-		edward: users[4].id,
-	};
-
-	// Create 15 visit distributed among users
 	await prisma.visit.createMany({
 		data: [
-			// Alice's visits
 			{
-				title: "Getting Started with TypeScript and Prisma",
+				title: "Annual Physical with Dr. Carter",
 				content:
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id erat a lorem tincidunt ultricies. Vivamus porta bibendum nulla vel accumsan.",
-
-				userId: userIdMapping.alice,
+					"Discussed overall wellness, reviewed lab work, and received recommendations for maintaining heart health.",
+				userId: alex.id,
 			},
 			{
-				title: "How ORMs Simplify Complex Queries",
+				title: "Dermatology Consultation for Persistent Rash",
 				content:
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id erat a lorem tincidunt ultricies. Vivamus porta bibendum nulla vel accumsan.",
-				userId: userIdMapping.alice,
-			},
-
-			// Bob's visits
-			{
-				title: "Mastering Prisma: Efficient Database Migrations",
-				content:
-					"Ut ullamcorper nec erat id auctor. Nullam nec ligula in ex feugiat tincidunt. Cras accumsan vehicula tortor ut eleifend.",
-
-				userId: userIdMapping.bob,
+					"Evaluated chronic rash on forearms, started topical steroid, and scheduled a two-week follow-up.",
+				userId: alex.id,
 			},
 			{
-				title: "Best Practices for Type Safety in ORMs",
+				title: "Cardiology Follow-Up on Blood Pressure Medication",
 				content:
-					"Aliquam erat volutpat. Suspendisse potenti. Maecenas fringilla elit vel eros laoreet, et tempor sapien vulputate.",
-				userId: userIdMapping.bob,
+					"Reviewed home blood pressure logs, adjusted dosage of lisinopril, and ordered repeat labs.",
+				userId: alex.id,
 			},
 			{
-				title: "TypeScript Utility Types for Database Models",
+				title: "Allergy Testing Appointment at Downtown Clinic",
 				content:
-					"Donec ac magna facilisis, vestibulum ligula at, elementum nisl. Morbi volutpat eget velit eu egestas.",
-				userId: userIdMapping.bob,
-			},
-
-			// Charlie's visits (no visits for Charlie)
-
-			// Diana's visits
-			{
-				title: "Exploring Database Indexes and Their Performance Impact",
-				content:
-					"Vivamus ac velit tincidunt, sollicitudin erat quis, fringilla enim. Aenean posuere est a risus placerat suscipit.",
-				userId: userIdMapping.diana,
+					"Completed skin prick tests for seasonal allergens and received guidance on avoidance strategies.",
+				userId: alex.id,
 			},
 			{
-				title: "Choosing the Right Database for Your TypeScript Project",
+				title: "Orthopedic Evaluation After Knee Pain",
 				content:
-					"Sed vel suscipit lorem. Duis et arcu consequat, sagittis justo quis, pellentesque risus. Curabitur sed consequat est.",
-				userId: userIdMapping.diana,
+					"Assessed right knee discomfort following a run, ordered MRI imaging, and recommended rest with ice therapy.",
+				userId: alex.id,
 			},
 			{
-				title: "Designing Scalable Schemas with Prisma",
+				title: "ENT Visit for Chronic Sinus Congestion",
 				content:
-					"Phasellus ut erat nec elit ultricies egestas. Vestibulum rhoncus urna eget magna varius pharetra.",
-				userId: userIdMapping.diana,
+					"Discussed six-month history of congestion, started nasal spray, and planned a CT scan if symptoms persist.",
+				userId: alex.id,
 			},
 			{
-				title: "Handling Relations Between Models in ORMs",
+				title: "Nutrition Counseling for Weight Management",
 				content:
-					"Integer luctus ac augue at tristique. Curabitur varius nisl vitae mi fringilla, vel tincidunt nunc dictum.",
-				userId: userIdMapping.diana,
-			},
-
-			// Edward's visits
-			{
-				title: "Why TypeORM Still Has Its Place in 2025",
-				content:
-					"Morbi non arcu nec velit cursus feugiat sit amet sit amet mi. Etiam porttitor ligula id sem molestie, in tempor arcu bibendum.",
-				userId: userIdMapping.edward,
+					"Reviewed food diary, set calorie goals, and outlined a protein-forward meal plan for the month.",
+				userId: alex.id,
 			},
 			{
-				title: "NoSQL vs SQL: The Definitive Guide for Developers",
+				title: "Immunization Appointment for Seasonal Flu Shot",
 				content:
-					"Suspendisse a ligula sit amet risus ullamcorper tincidunt. Curabitur tincidunt, sapien id fringilla auctor, risus libero gravida odio, nec volutpat libero orci nec lorem.",
-				userId: userIdMapping.edward,
+					"Received annual influenza vaccine, confirmed no adverse reactions, and updated immunization record.",
+				userId: alex.id,
 			},
 			{
-				title: "Optimizing Queries with Prisma's Select and Include",
+				title: "Neurology Assessment for Migraine Episodes",
 				content:
-					"Proin vel diam vel nisi facilisis malesuada. Sed vitae diam nec magna mollis commodo a vitae nunc.",
-				userId: userIdMapping.edward,
+					"Reviewed migraine triggers, prescribed preventive therapy, and scheduled a three-month check-in.",
+				userId: alex.id,
 			},
 			{
-				title: "PostgreSQL Optimizations Every Developer Should Know",
+				title: "Endocrinology Review of Thyroid Function",
 				content:
-					"Nullam mollis quam sit amet lacus interdum, at suscipit libero pellentesque. Suspendisse in mi vitae magna finibus pretium.",
-				userId: userIdMapping.edward,
+					"Discussed lab trends showing mild hypothyroidism and initiated levothyroxine with monitoring plan.",
+				userId: alex.id,
 			},
 			{
-				title: "Scaling Applications with Partitioned Tables in PostgreSQL",
+				title: "Physical Therapy Session for Shoulder Rehab",
 				content:
-					"Cras vitae tortor in mauris tristique elementum non id ipsum. Nunc vitae pulvinar purus.",
-				userId: userIdMapping.edward,
+					"Practiced range-of-motion exercises for rotator cuff strain and received an updated home routine.",
+				userId: alex.id,
+			},
+			{
+				title: "Urgent Care Visit for Acute Stomach Pain",
+				content:
+					"Evaluated abdominal cramps, administered IV fluids, and recommended bland diet with follow-up if pain returns.",
+				userId: alex.id,
+			},
+			{
+				title: "Virtual Consultation About Sleep Difficulties",
+				content:
+					"Reviewed sleep hygiene habits, ordered home sleep apnea test, and provided melatonin dosing guidance.",
+				userId: alex.id,
+			},
+			{
+				title: "Ophthalmology Check for Sudden Blurry Vision",
+				content:
+					"Completed dilated exam, ruled out retinal tear, and prescribed updated corrective lenses.",
+				userId: alex.id,
+			},
+			{
+				title: "Lab Results Review on Cholesterol Management",
+				content:
+					"Discussed improved lipid panel, continued statin therapy, and encouraged consistent aerobic exercise.",
+				userId: alex.id,
+			},
+			{
+				title: "Prenatal Style Nutrition Check-In for Partner Support",
+				content:
+					"Met with obstetric dietitian to understand nutrition needs, documented meal prep ideas, and planned next visit.",
+				userId: alex.id,
+			},
+			{
+				title: "Post-Operative Follow-Up After Appendectomy",
+				content:
+					"Inspected incision healing, cleared light exercise, and emphasized warning signs that require urgent care.",
+				userId: alex.id,
+			},
+			{
+				title: "Mental Health Counseling for Anxiety Management",
+				content:
+					"Discussed coping strategies, documented progress with mindfulness practices, and set weekly therapy goals.",
+				userId: alex.id,
+			},
+			{
+				title: "Travel Clinic Visit for Vaccine Guidance",
+				content:
+					"Reviewed upcoming trip itinerary, received hepatitis A booster, and obtained malaria prophylaxis instructions.",
+				userId: alex.id,
+			},
+			{
+				title: "Sports Medicine Evaluation for Marathon Training",
+				content:
+					"Completed gait analysis, adjusted training plan to prevent overuse injuries, and scheduled follow-up in six weeks.",
+				userId: alex.id,
+			},
+			{
+				title: "Primary Care Visit to Review Vaccination History",
+				content:
+					"Audited immunization record, ordered tetanus booster, and updated digital health profile for employer.",
+				userId: alex.id,
 			},
 		],
 	});

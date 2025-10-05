@@ -9,6 +9,7 @@ export default async function Home() {
 
 	return (
 		<div className="flex flex-1 flex-col items-center p-8">
+			My test preview
 			{hasVisits ? (
 				<div className="mb-8 grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{visits.map((visit) => (

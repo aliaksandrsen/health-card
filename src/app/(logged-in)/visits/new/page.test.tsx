@@ -44,6 +44,7 @@ describe("NewVisit page", () => {
 	it("submits the form data via createVisit action", async () => {
 		const user = userEvent.setup();
 		render(<NewVisit />);
+		mockedCreateVisit.mockResolvedValueOnce({ errors: {} });
 
 		await user.type(screen.getByLabelText(/title/i), "Follow-up");
 		await user.type(screen.getByLabelText(/content/i), "Discuss lab results");
@@ -51,8 +52,9 @@ describe("NewVisit page", () => {
 		await user.click(screen.getByRole("button", { name: /create visit/i }));
 
 		expect(mockedCreateVisit).toHaveBeenCalledTimes(1);
-		const submittedFormData = mockedCreateVisit.mock.calls[0]?.[0];
+		const [prevState, submittedFormData] = mockedCreateVisit.mock.calls[0] ?? [];
 
+		expect(prevState).toEqual({ errors: {} });
 		expect(submittedFormData).toBeInstanceOf(FormData);
 		expect(submittedFormData?.get("title")).toBe("Follow-up");
 		expect(submittedFormData?.get("content")).toBe("Discuss lab results");

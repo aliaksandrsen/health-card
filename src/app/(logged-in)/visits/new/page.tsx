@@ -1,11 +1,19 @@
+"use client";
+
+import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createVisit } from "../actions";
+import { createVisit, type State } from "../actions";
+
+const initialState: State = { errors: {} };
 
 export default function NewVisit() {
+	const [state, formAction] = useFormState(createVisit, initialState);
+	const { errors } = state;
+
 	return (
 		<div className="flex flex-1 flex-col items-center">
 			<Card className="w-full max-w-3xl">
@@ -13,7 +21,12 @@ export default function NewVisit() {
 					<CardTitle>Create New Visit</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<form action={createVisit} className="space-y-6">
+					<form action={formAction} className="space-y-6">
+						{errors?.form && (
+							<p className="text-destructive text-sm" role="alert">
+								{errors.form}
+							</p>
+						)}
 						<div className="space-y-2">
 							<Label htmlFor="title">Title</Label>
 							<Input
@@ -21,8 +34,19 @@ export default function NewVisit() {
 								id="title"
 								name="title"
 								required
+								aria-invalid={Boolean(errors?.title)}
+								aria-describedby={errors?.title ? "title-error" : undefined}
 								placeholder="Enter your visit title ..."
 							/>
+							{errors?.title && (
+								<p
+									id="title-error"
+									className="text-destructive text-sm"
+									role="alert"
+								>
+									{errors.title}
+								</p>
+							)}
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="content">Content</Label>
@@ -30,16 +54,35 @@ export default function NewVisit() {
 								id="content"
 								name="content"
 								required
+								aria-invalid={Boolean(errors?.content)}
+								aria-describedby={errors?.content ? "content-error" : undefined}
 								placeholder="Write your visits content here ..."
 								rows={6}
 							/>
+							{errors?.content && (
+								<p
+									id="content-error"
+									className="text-destructive text-sm"
+									role="alert"
+								>
+									{errors.content}
+								</p>
+							)}
 						</div>
-						<Button type="submit" className="w-full cursor-pointer">
-							Create Visit
-						</Button>
+						<SubmitButton />
 					</form>
 				</CardContent>
 			</Card>
 		</div>
+	);
+}
+
+function SubmitButton() {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button type="submit" className="w-full cursor-pointer" disabled={pending}>
+			{pending ? "Creating..." : "Create Visit"}
+		</Button>
 	);
 }

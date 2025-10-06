@@ -22,11 +22,6 @@ export default function NewVisit() {
 				</CardHeader>
 				<CardContent>
 					<form action={formAction} className="space-y-6">
-						{errors?.form && (
-							<p className="text-destructive text-sm" role="alert">
-								{errors.form}
-							</p>
-						)}
 						<div className="space-y-2">
 							<Label htmlFor="title">Title</Label>
 							<Input
@@ -41,8 +36,9 @@ export default function NewVisit() {
 							{errors?.title && (
 								<p
 									id="title-error"
-									className="text-destructive text-sm"
+									className="font-medium text-destructive text-sm"
 									role="alert"
+									aria-live="polite"
 								>
 									{errors.title}
 								</p>
@@ -62,13 +58,23 @@ export default function NewVisit() {
 							{errors?.content && (
 								<p
 									id="content-error"
-									className="text-destructive text-sm"
+									className="font-medium text-destructive text-sm"
 									role="alert"
+									aria-live="polite"
 								>
 									{errors.content}
 								</p>
 							)}
 						</div>
+						{errors?.form && (
+							<div
+								className="rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 font-medium text-destructive text-sm"
+								role="alert"
+								aria-live="assertive"
+							>
+								{errors.form}
+							</div>
+						)}
 						<SubmitButton />
 					</form>
 				</CardContent>

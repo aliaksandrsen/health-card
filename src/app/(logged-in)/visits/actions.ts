@@ -52,12 +52,12 @@ const createVisitSchema = z.object({
 	title: z
 		.string("Title should be a string")
 		.trim()
-		.min(1, "Title is required")
+		.min(2, "Title is required")
 		.max(100, "Title must be 100 characters or less"),
 	content: z
 		.string("Content should be a string")
 		.trim()
-		.min(1, "Content is required")
+		.min(2, "Content is required")
 		.max(5000, "Content must be 5000 characters or less"),
 });
 

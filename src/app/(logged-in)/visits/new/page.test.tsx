@@ -52,7 +52,8 @@ describe("NewVisit page", () => {
 		await user.click(screen.getByRole("button", { name: /create visit/i }));
 
 		expect(mockedCreateVisit).toHaveBeenCalledTimes(1);
-		const [prevState, submittedFormData] = mockedCreateVisit.mock.calls[0] ?? [];
+		const [prevState, submittedFormData] =
+			mockedCreateVisit.mock.calls[0] ?? [];
 
 		expect(prevState).toEqual({ errors: {} });
 		expect(submittedFormData).toBeInstanceOf(FormData);

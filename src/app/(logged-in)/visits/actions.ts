@@ -13,7 +13,7 @@ export const fetchVisits = async ({ skip, take }: FetchVisitsInput) => {
 	const session = await auth();
 
 	if (!session?.user) {
-		throw new Error("Unauthorized");
+		redirect("/login");
 	}
 
 	const userId = +session.user.id;
@@ -37,7 +37,7 @@ export const getVisit = async (visitId: number) => {
 	const session = await auth();
 
 	if (!session?.user) {
-		throw new Error("Unauthorized");
+		redirect("/login");
 	}
 
 	const userId = +session.user.id;
@@ -51,7 +51,7 @@ export const createVisit = async (formData: FormData) => {
 	const session = await auth();
 
 	if (!session?.user) {
-		throw new Error("Unauthorized");
+		redirect("/login");
 	}
 
 	const userId = +session.user.id;
@@ -60,7 +60,7 @@ export const createVisit = async (formData: FormData) => {
 	const content = formData.get("content");
 
 	if (typeof title !== "string" || typeof content !== "string") {
-		throw new Error("Unexpected form data");
+		return { error: "Unexpected form data" };
 	}
 
 	const trimmedTitle = title.trim();
@@ -68,7 +68,7 @@ export const createVisit = async (formData: FormData) => {
 
 	if (!trimmedTitle || !trimmedContent) {
 		// TODO useFormState
-		throw new Error("Title and content are required");
+		return { error: "Title and content are required" };
 	}
 
 	await prisma.visit.create({
@@ -86,7 +86,7 @@ export const deleteVisit = async (visitId: number) => {
 	const session = await auth();
 
 	if (!session?.user) {
-		throw new Error("Unauthorized");
+		redirect("/login");
 	}
 
 	const userId = +session.user.id;

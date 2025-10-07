@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,10 @@ import { createVisit, type State } from "../actions";
 const initialState: State = { errors: {} };
 
 export default function NewVisit() {
-	const [state, formAction] = useFormState(createVisit, initialState);
+	const [state, formAction, isPending] = useActionState(
+		createVisit,
+		initialState,
+	);
 	const { errors } = state;
 
 	return (
@@ -38,7 +41,7 @@ export default function NewVisit() {
 									id="title-error"
 									className="font-medium text-destructive text-sm"
 									role="alert"
-									aria-live="polite"
+									aria-live="assertive"
 								>
 									{errors.title}
 								</p>
@@ -60,7 +63,7 @@ export default function NewVisit() {
 									id="content-error"
 									className="font-medium text-destructive text-sm"
 									role="alert"
-									aria-live="polite"
+									aria-live="assertive"
 								>
 									{errors.content}
 								</p>
@@ -75,20 +78,16 @@ export default function NewVisit() {
 								{errors.form}
 							</div>
 						)}
-						<SubmitButton />
+						<Button
+							type="submit"
+							className="w-full cursor-pointer"
+							disabled={isPending}
+						>
+							{isPending ? "Creating..." : "Create Visit"}
+						</Button>
 					</form>
 				</CardContent>
 			</Card>
 		</div>
-	);
-}
-
-function SubmitButton() {
-	const { pending } = useFormStatus();
-
-	return (
-		<Button type="submit" className="w-full cursor-pointer" disabled={pending}>
-			{pending ? "Creating..." : "Create Visit"}
-		</Button>
 	);
 }

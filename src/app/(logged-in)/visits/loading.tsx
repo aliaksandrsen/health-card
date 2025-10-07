@@ -28,7 +28,6 @@ export default function VisitsLoading() {
 					</li>
 				))}
 			</ul>
-
 			<div className="mt-8 flex items-center gap-2">
 				<Skeleton className="h-10 w-24" />
 				<Skeleton className="h-10 w-10 rounded-full" />

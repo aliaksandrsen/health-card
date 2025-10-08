@@ -17,7 +17,7 @@ export const VisitPreviewCard = ({
 }: VisitPreviewCardProps) => {
 	return (
 		<Link href={href} className="group block h-full">
-			<Card className="transition-shadow hover:shadow-lg">
+			<Card className="h-full transition-shadow hover:shadow-lg">
 				<CardHeader>
 					<CardTitle>{visit.title}</CardTitle>
 				</CardHeader>

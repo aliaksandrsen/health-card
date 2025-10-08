@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,15 +27,20 @@ export default async function Visit({
 					<div className="space-y-6 text-lg leading-relaxed">
 						<p>{visit.content}</p>
 					</div>
-					<form action={deleteVisitAction} className="mt-6">
-						<Button
-							className="cursor-pointer"
-							type="submit"
-							variant="destructive"
-						>
-							Delete Visit
+					<div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+						<Button asChild variant="outline" className="cursor-pointer">
+							<Link href={`/visits/${visit.id}/edit`}>Edit Visit</Link>
 						</Button>
-					</form>
+						<form action={deleteVisitAction}>
+							<Button
+								className="cursor-pointer"
+								type="submit"
+								variant="destructive"
+							>
+								Delete Visit
+							</Button>
+						</form>
+					</div>
 				</CardContent>
 			</Card>
 		</div>

@@ -48,7 +48,7 @@ export const getVisit = async (visitId: number) => {
 	});
 };
 
-const createVisitSchema = z.object({
+const visitSchema = z.object({
 	title: z
 		.string("Title should be a string")
 		.trim()
@@ -79,7 +79,7 @@ export const createVisit = async (
 		redirect("/login");
 	}
 
-	const validatedFields = createVisitSchema.safeParse({
+	const validatedFields = visitSchema.safeParse({
 		title: formData.get("title"),
 		content: formData.get("content"),
 	});
@@ -122,6 +122,74 @@ export const createVisit = async (
 	}
 
 	redirect("/visits");
+};
+
+export const updateVisit = async (
+	visitId: number,
+	prevState: State,
+	formData: FormData,
+): Promise<State> => {
+	const session = await auth();
+
+	if (!session?.user) {
+		redirect("/login");
+	}
+
+	const validatedFields = visitSchema.safeParse({
+		title: formData.get("title"),
+		content: formData.get("content"),
+	});
+
+	if (!validatedFields.success) {
+		const tree = z.treeifyError(validatedFields.error);
+		const errors: State["errors"] = {};
+		const titleErrors = tree.properties?.title?.errors;
+		const contentErrors = tree.properties?.content?.errors;
+
+		if (titleErrors?.length) {
+			errors.title = titleErrors[0];
+		}
+
+		if (contentErrors?.length) {
+			errors.content = contentErrors[0];
+		}
+
+		return { ...prevState, errors };
+	}
+
+	const { title, content } = validatedFields.data;
+	const userId = +session.user.id;
+
+	try {
+		const result = await prisma.visit.updateMany({
+			where: {
+				id: visitId,
+				userId,
+			},
+			data: {
+				title,
+				content,
+			},
+		});
+
+		if (result.count === 0) {
+			return {
+				...prevState,
+				errors: {
+					form: "Visit not found.",
+				},
+			};
+		}
+	} catch {
+		return {
+			...prevState,
+			errors: {
+				form: "Unable to update the visit right now. Please try again.",
+			},
+		};
+	}
+
+	redirect(`/visits/${visitId}`);
 };
 
 export const deleteVisit = async (visitId: number) => {

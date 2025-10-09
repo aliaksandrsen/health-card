@@ -31,6 +31,7 @@
 		"@types/react": "19.2.2",
 		"@types/react-dom": "19.2.1",
 		"@vitejs/plugin-react": "5.0.4",
+		"dotenv-cli": "10.0.0",
 		"jsdom": "27.0.0",
 		"prisma": "6.17.0",
 		"tailwindcss": "4.1.13",
@@ -43,6 +44,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
+		"preview": "dotenv -e .env.preview.local -- VERCEL_ENV=preview next start",
+		"prod": "dotenv -e .env.production.local -- VERCEL_ENV=production next start",
 		"build": "next build --turbopack",
 		"start": "next start",
 		"lint": "biome check",

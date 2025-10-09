@@ -15,7 +15,7 @@ describe("EmptyVisitsFallback", () => {
 		expect(description).toBeInTheDocument();
 	});
 
-	it.skip("links to the new visit form", () => {
+	it("links to the new visit form", () => {
 		render(<EmptyVisitsFallback />);
 
 		const links = screen.getAllByRole("link", {

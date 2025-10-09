@@ -14,8 +14,9 @@ export default function VisitLoading() {
 						<Skeleton className="h-4 w-2/3" />
 					</div>
 
-					<div className="mt-8 flex justify-start">
-						<Skeleton className="h-10 w-32" />
+					<div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+						<Skeleton className="h-10 w-24" />
+						<Skeleton className="h-10 w-26" />
 					</div>
 				</div>
 			</div>

@@ -50,7 +50,8 @@ describe("EditVisitForm", () => {
 		await user.click(submitButton);
 
 		expect(mockedUpdateVisit).toHaveBeenCalledTimes(1);
-		const [visitId, prevState, formData] = mockedUpdateVisit.mock.calls[0] ?? [];
+		const [visitId, prevState, formData] =
+			mockedUpdateVisit.mock.calls[0] ?? [];
 		expect(visitId).toBe(12);
 		expect(prevState).toEqual({ errors: {} });
 		expect(formData).toBeInstanceOf(FormData);

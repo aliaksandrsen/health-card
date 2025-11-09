@@ -55,5 +55,19 @@
 		"postinstall": "prisma generate",
 		"migrate:deploy": "prisma migrate deploy"
 	},
-	"version": "0.1.0"
+	"version": "0.1.0",
+	"browserslist": {
+		"production": [
+			"supports es6-module",
+			"not safari < 15",
+			"not ios_saf < 15",
+			"not firefox < 100",
+			"not chrome < 100"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
 }

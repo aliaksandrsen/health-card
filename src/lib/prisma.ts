@@ -3,13 +3,17 @@ import { PrismaClient } from "@prisma/client";
 
 const connectionString = process.env.DATABASE_URL;
 
-if (!connectionString) {
-	throw new Error("DATABASE_URL is not set");
-}
-
-const adapter = new PrismaPg({ connectionString });
-
 const prismaClientSingleton = () => {
+	if (!connectionString) {
+		// Allow builds/tests without a DB; fail fast on actual DB usage.
+		return new Proxy({} as PrismaClient, {
+			get() {
+				throw new Error("DATABASE_URL is not set");
+			},
+		});
+	}
+
+	const adapter = new PrismaPg({ connectionString });
 	return new PrismaClient({ adapter });
 };
 

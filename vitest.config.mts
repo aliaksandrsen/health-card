@@ -13,5 +13,8 @@ export default defineConfig({
 				inline: ["next"],
 			},
 		},
+		coverage: {
+			provider: "v8", // or 'istanbul'
+		},
 	},
 });

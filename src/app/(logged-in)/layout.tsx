@@ -2,11 +2,13 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Header } from "./components/Header";
 
+type LoggedInLayoutProps = {
+	readonly children: React.ReactNode;
+};
+
 export default async function LoggedInLayout({
 	children,
-}: {
-	children: React.ReactNode;
-}) {
+}: LoggedInLayoutProps) {
 	const session = await auth();
 
 	if (!session?.user) {

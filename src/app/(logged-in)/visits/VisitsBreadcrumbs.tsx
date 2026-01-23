@@ -13,7 +13,11 @@ const baseItems = [
 	{ label: "Visits", href: "/visits" },
 ] as BreadcrumbEntry[];
 
-export function VisitsBreadcrumbs({ className }: { className?: string }) {
+type VisitsBreadcrumbsProps = {
+	readonly className?: string;
+};
+
+export function VisitsBreadcrumbs({ className }: VisitsBreadcrumbsProps) {
 	const pathname = usePathname();
 	const path = pathname?.split("?")[0] ?? "";
 

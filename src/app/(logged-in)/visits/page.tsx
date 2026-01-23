@@ -14,7 +14,7 @@ export default async function VisitsPage(props: VisitsPageProps) {
 	const { page } = await props.searchParams;
 	const pageStr = Array.isArray(page) ? page[0] : page;
 
-	const parsedPage = parseInt(pageStr ?? "1", 10);
+	const parsedPage = Number.parseInt(pageStr ?? "1", 10);
 	const currentPage =
 		Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 	const offset = (currentPage - 1) * VISITS_PER_PAGE;

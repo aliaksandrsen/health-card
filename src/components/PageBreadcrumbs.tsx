@@ -15,8 +15,8 @@ export type BreadcrumbEntry = {
 };
 
 type PageBreadcrumbsProps = {
-	items: BreadcrumbEntry[];
-	className?: string;
+	readonly items: BreadcrumbEntry[];
+	readonly className?: string;
 };
 
 export function PageBreadcrumbs({ items, className }: PageBreadcrumbsProps) {

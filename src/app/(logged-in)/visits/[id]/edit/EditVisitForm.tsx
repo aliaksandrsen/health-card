@@ -10,7 +10,7 @@ import { type State, updateVisit } from "../../actions";
 const initialState: State = { errors: {} };
 
 type EditVisitFormProps = {
-	visit: {
+	readonly visit: {
 		id: number;
 		title: string;
 		content: string;

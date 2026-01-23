@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { deleteVisit, getVisit } from "../actions";
 
-export default async function Visit({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
+type VisitPageProps = {
+	readonly params: Promise<{ id: string }>;
+};
+
+export default async function Visit({ params }: VisitPageProps) {
 	const { id } = await params;
 	const visit = await getVisit(+id);
 

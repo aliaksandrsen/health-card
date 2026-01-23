@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getVisit } from "../../actions";
 import EditVisitForm from "./EditVisitForm";
 
-export default async function EditVisitPage({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
+type EditVisitPageProps = {
+	readonly params: Promise<{ id: string }>;
+};
+
+export default async function EditVisitPage({ params }: EditVisitPageProps) {
 	const { id } = await params;
 	const visit = await getVisit(+id);
 

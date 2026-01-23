@@ -6,9 +6,11 @@ import { VisitsPagination } from "./VisitsPagination";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function VisitsPage(props: {
-	searchParams: SearchParams;
-}) {
+type VisitsPageProps = {
+	readonly searchParams: SearchParams;
+};
+
+export default async function VisitsPage(props: VisitsPageProps) {
 	const { page } = await props.searchParams;
 	const pageStr = Array.isArray(page) ? page[0] : page;
 

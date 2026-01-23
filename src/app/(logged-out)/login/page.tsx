@@ -45,7 +45,6 @@ export default function LoginPage() {
 			form.setError("root", {
 				message: response.error,
 			});
-			return;
 		} else {
 			router.push("/");
 		}

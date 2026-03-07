@@ -1,6 +1,6 @@
 # Health Card
 
-Health Card is a Next.js 15 application for tracking healthcare visits and storing notes connected to each appointment. It ships with authentication, visit management, and a responsive interface tailored for patient record keeping.
+Health Card is a Next.js 16 application for tracking healthcare visits and storing notes connected to each appointment. It ships with authentication, visit management, and a responsive interface tailored for patient record keeping.
 
 **Live demo:** https://health-card-xi.vercel.app/
 
@@ -13,7 +13,7 @@ Health Card is a Next.js 15 application for tracking healthcare visits and stori
 - Responsive UI built with Tailwind CSS 4 utilities and shadcn-inspired components
 
 ## Tech Stack
-- Next.js 15 App Router with Server Components and Server Actions
+- Next.js 16 App Router with Server Components and Server Actions
 - Auth.js (NextAuth v5) credentials provider for username/password auth
 - Prisma ORM targeting PostgreSQL
 - React 19 with TypeScript for type safety
@@ -21,7 +21,7 @@ Health Card is a Next.js 15 application for tracking healthcare visits and stori
 - Biome for linting/formatting and Vitest with Testing Library for tests
 
 ## Prerequisites
-- Node.js 20 or newer (Next.js 15 requires >= 18.18; 20 LTS is recommended)
+- Node.js 20 or newer (Next.js 16 requires >= 20.9)
 - npm 10 (bundled with supported Node.js versions)
 - PostgreSQL database accessible from your development environment
 

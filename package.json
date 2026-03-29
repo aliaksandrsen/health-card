@@ -54,6 +54,7 @@
 		"lint": "biome check",
 		"format": "biome format --write",
 		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
 		"typecheck": "tsc -noEmit",
 		"postinstall": "prisma generate",
 		"migrate:deploy": "prisma migrate deploy"

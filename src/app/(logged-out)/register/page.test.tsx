@@ -18,7 +18,7 @@ const registerUserMock = vi.mocked(registerUser);
 
 const getActiveFieldset = () => {
 	const fieldsets = screen.getAllByRole("group");
-	return fieldsets[fieldsets.length - 1];
+	return fieldsets.at(-1) as HTMLElement;
 };
 
 describe("RegisterPage", () => {

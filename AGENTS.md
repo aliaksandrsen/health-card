@@ -6,28 +6,28 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 ## Commands
 
 ### Development
-- `npm install` - Install dependencies
-- `npm run dev` - Start development server with Turbopack
-- `npm run build` - Build for production with Turbopack
-- `npm start` - Start production server
+- `pnpm install` - Install dependencies
+- `pnpm dev` - Start development server with Turbopack
+- `pnpm build` - Build for production with Turbopack
+- `pnpm start` - Start production server
 
 ### Database
-- `npx prisma migrate dev` - Run migrations in development
-- `npm run migrate:deploy` - Deploy migrations to production
-- `npx prisma db seed` - Seed sample data
-- `npx prisma generate` - Generate Prisma Client (runs automatically on install)
-- `npx prisma studio` - Open Prisma Studio GUI
+- `pnpm prisma migrate dev` - Run migrations in development
+- `pnpm migrate:deploy` - Deploy migrations to production
+- `pnpm prisma db seed` - Seed sample data
+- `pnpm prisma generate` - Generate Prisma Client (runs automatically on install)
+- `pnpm prisma studio` - Open Prisma Studio GUI
 
 ### Testing
-- `npm test` - Run all tests in watch mode
-- `npm test -- --run` - Run all tests once
-- `npm test -- path/to/file.test.tsx` - Run a single test file
-- `npm test -- --ui` - Run tests with UI mode
+- `pnpm test` - Run all tests in watch mode
+- `pnpm test -- --run` - Run all tests once
+- `pnpm test -- path/to/file.test.tsx` - Run a single test file
+- `pnpm test -- --ui` - Run tests with UI mode
 
 ### Linting & Formatting
-- `npm run lint` - Check for lint errors with Biome
-- `npm run format` - Format code with Biome
-- `npm run typecheck` - Type-check with TypeScript (no emit)
+- `pnpm lint` - Check for lint errors with Biome
+- `pnpm format` - Format code with Biome
+- `pnpm typecheck` - Type-check with TypeScript (no emit)
 
 ## Code Style Guidelines
 
@@ -188,6 +188,6 @@ Required keys in `.env` (see `.env.example`):
 - `NEXTAUTH_URL` - Site origin (e.g., `http://localhost:3000`)
 
 ## Dependency Management
-- Use `npm` to install packages (keeps `package-lock.json` in sync)
-- Run `npm install <package>` to add dependencies
+- Use `pnpm` to install packages (keeps `pnpm-lock.yaml` in sync)
+- Run `pnpm add <package>` to add dependencies
 - Prisma Client regenerates automatically via `postinstall` script

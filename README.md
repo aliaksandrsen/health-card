@@ -22,7 +22,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 ## Prerequisites
 - Node.js 20 or newer (Next.js 16 requires >= 20.9)
-- npm 10 (bundled with supported Node.js versions)
+- pnpm 10 (recommended via `corepack enable`)
 - PostgreSQL database accessible from your development environment
 
 ## Environment variables
@@ -39,45 +39,45 @@ Next.js also honors `NEXT_PUBLIC_*` variables for client-facing configuration if
 ## Getting started
 1. Install dependencies.
    ```bash
-   npm install
+   pnpm install
    ```
 2. Apply the database schema.
    ```bash
-   npx prisma migrate dev
+   pnpm prisma migrate dev
    ```
-   For production or CI environments run `npx prisma migrate deploy` instead.
+   For production or CI environments run `pnpm prisma migrate deploy` instead.
 3. (Optional) Seed the database with demo users and visits.
    ```bash
-   npx prisma db seed
+   pnpm prisma db seed
    ```
    The seed script creates accounts such as `alice@example.com` with the password `password123`.
 
 ## Running the application
 - Start the development server with Turbopack:
   ```bash
-  npm run dev
+  pnpm dev
   ```
 - Build an optimized production bundle:
   ```bash
-  npm run build
+  pnpm build
   ```
 - Serve the production build:
   ```bash
-  npm start
+  pnpm start
   ```
 
 ## Quality checks
 - Run unit and component tests:
   ```bash
-  npm test
+  pnpm test
   ```
 - Lint the codebase with Biome:
   ```bash
-  npm run lint
+  pnpm lint
   ```
 - Apply formatting fixes:
   ```bash
-  npm run format
+  pnpm format
   ```
 
 ## Project structure
@@ -95,4 +95,4 @@ prisma/               Prisma schema, migrations, and seed script
 - `Visit`: belongs to a user and stores visit title, content, and timestamps.
 
 ## Testing notes
-Tests live next to the code they cover (for example `src/app/(logged-in)/visits/VisitsPagination.test.tsx`) and run in a JSDOM environment via Vitest and Testing Library. Use `npm test` to execute the full suite or `npm test -- --watch` for an interactive loop.
+Tests live next to the code they cover (for example `src/app/(logged-in)/visits/VisitsPagination.test.tsx`) and run in a JSDOM environment via Vitest and Testing Library. Use `pnpm test` to execute the full suite or `pnpm test -- --watch` for an interactive loop.

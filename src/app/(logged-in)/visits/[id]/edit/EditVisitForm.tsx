@@ -43,7 +43,7 @@ export default function EditVisitForm({ visit }: EditVisitFormProps) {
 				{errors?.title && (
 					<p
 						id="title-error"
-						className="font-medium text-destructive text-sm"
+						className="text-destructive text-sm font-medium"
 						role="alert"
 						aria-live="assertive"
 					>
@@ -66,7 +66,7 @@ export default function EditVisitForm({ visit }: EditVisitFormProps) {
 				{errors?.content && (
 					<p
 						id="content-error"
-						className="font-medium text-destructive text-sm"
+						className="text-destructive text-sm font-medium"
 						role="alert"
 						aria-live="assertive"
 					>
@@ -76,7 +76,7 @@ export default function EditVisitForm({ visit }: EditVisitFormProps) {
 			</div>
 			{errors?.form && (
 				<div
-					className="rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 font-medium text-destructive text-sm"
+					className="border-destructive/40 bg-destructive/10 text-destructive rounded-md border px-4 py-3 text-sm font-medium"
 					role="alert"
 					aria-live="assertive"
 				>

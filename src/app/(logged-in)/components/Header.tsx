@@ -12,9 +12,9 @@ type HeaderProps = {
 
 export const Header = ({ user }: HeaderProps) => {
 	return (
-		<header className="w-full border-b bg-background px-8 py-4">
+		<header className="bg-background w-full border-b px-8 py-4">
 			<nav className="flex items-center justify-between">
-				<Link href="/" className="font-bold text-xl hover:text-primary">
+				<Link href="/" className="hover:text-primary text-xl font-bold">
 					Health Card
 				</Link>
 				<div className="flex items-center space-x-4">
@@ -26,7 +26,7 @@ export const Header = ({ user }: HeaderProps) => {
 						<Link href="/visits/new">New Visit</Link>
 					</Button>
 					<div className="flex items-center space-x-4">
-						<div className="text-right text-muted-foreground text-sm">
+						<div className="text-muted-foreground text-right text-sm">
 							<div>{user.name}</div>
 							<div>{user.email}</div>
 						</div>

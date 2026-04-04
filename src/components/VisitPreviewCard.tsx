@@ -22,14 +22,14 @@ export const VisitPreviewCard = ({
 					<CardTitle>{visit.title}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="mb-4 text-muted-foreground text-xs">
+					<p className="text-muted-foreground mb-4 text-xs">
 						{new Date(visit.createdAt).toLocaleDateString("en-US", {
 							year: "numeric",
 							month: "long",
 							day: "numeric",
 						})}
 					</p>
-					<p className="line-clamp-2 text-muted-foreground leading-relaxed">
+					<p className="text-muted-foreground line-clamp-2 leading-relaxed">
 						{visit.content}
 					</p>
 				</CardContent>

@@ -8,10 +8,7 @@ export default function HomeLoading() {
 			<div className="mb-8 grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{Array.from({ length: PREVIEW_COUNT }).map((_, index) => (
 					<Card
-						key={`home-visit-skeleton-${
-							// biome-ignore lint/suspicious/noArrayIndexKey: predictable list
-							index
-						}`}
+						key={`home-visit-skeleton-${index}`}
 						className="shadow-md transition-shadow"
 					>
 						<CardHeader>

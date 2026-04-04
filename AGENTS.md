@@ -1,17 +1,20 @@
 # Agents Guide
 
 ## Context
+
 Health Card is a Next.js 15 App Router project that helps users store and review healthcare visits. Authentication relies on Auth.js (NextAuth v5) with a credentials provider backed by Prisma and PostgreSQL. UI components live under `src/components`, and Tailwind CSS 4 utilities drive styling.
 
 ## Commands
 
 ### Development
+
 - `pnpm install` - Install dependencies
 - `pnpm dev` - Start development server with Turbopack
 - `pnpm build` - Build for production with Turbopack
 - `pnpm start` - Start production server
 
 ### Database
+
 - `pnpm prisma migrate dev` - Run migrations in development
 - `pnpm migrate:deploy` - Deploy migrations to production
 - `pnpm prisma db seed` - Seed sample data
@@ -19,21 +22,25 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - `pnpm prisma studio` - Open Prisma Studio GUI
 
 ### Testing
+
 - `pnpm test` - Run all tests in watch mode
 - `pnpm test -- --run` - Run all tests once
 - `pnpm test -- path/to/file.test.tsx` - Run a single test file
 - `pnpm test -- --ui` - Run tests with UI mode
 
 ### Linting & Formatting
-- `pnpm lint` - Check for lint errors with Biome
-- `pnpm format` - Format code with Biome
+
+- `pnpm lint` - Check for lint errors with ESLint
+- `pnpm format` - Format code with Prettier
+- `pnpm format:check` - Check formatting with Prettier
 - `pnpm typecheck` - Type-check with TypeScript (no emit)
 
 ## Code Style Guidelines
 
 ### Imports
+
 - Use `@/` path alias for imports from `src/` directory
-- Import order (enforced by Biome's organizeImports):
+- Import order (enforced by ESLint `simple-import-sort`):
   1. External packages (e.g., `react`, `next`, `zod`)
   2. Internal aliases starting with `@/` (e.g., `@/auth`, `@/lib/prisma`, `@/components/ui/button`)
 - Group imports by type: dependencies first, then internal modules
@@ -47,14 +54,16 @@ Health Card is a Next.js 15 App Router project that helps users store and review
   ```
 
 ### Formatting
-- Use tabs for indentation (configured in Biome)
-- No semicolons (Biome default)
+
+- Use tabs for indentation (configured in Prettier)
+- Use semicolons (Prettier `semi: true`)
 - Double quotes for strings
-- Tailwind classes must be sorted (enforced by Biome's `useSortedClasses` rule)
+- Tailwind classes must be sorted (enforced by `prettier-plugin-tailwindcss`)
 - Use `cn()` helper from `@/lib/utils` to compose className strings
 - Example: `className={cn(buttonVariants({ variant, size, className }))}`
 
 ### TypeScript
+
 - Strict mode enabled (`strict: true` in tsconfig)
 - Always provide explicit types for:
   - Function parameters and return types
@@ -66,15 +75,16 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - Example:
   ```tsx
   export type State = {
-    errors?: {
-      title?: string;
-      content?: string;
-      form?: string;
-    };
+  	errors?: {
+  		title?: string;
+  		content?: string;
+  		form?: string;
+  	};
   };
   ```
 
 ### Naming Conventions
+
 - **Files**: camelCase for utilities, PascalCase for components
   - Components: `EditVisitForm.tsx`, `VisitsPagination.tsx`
   - Tests: `EditVisitForm.test.tsx` (colocated with source)
@@ -86,11 +96,12 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - **Components**: PascalCase function declarations (not arrow functions for named exports)
   ```tsx
   function Button({ className, ...props }: ButtonProps) {
-    return <button className={cn(className)} {...props} />;
+  	return <button className={cn(className)} {...props} />;
   }
   ```
 
 ### React & Next.js Patterns
+
 - Use `"use client"` directive for client components (forms, interactive UI)
 - Use `"use server"` directive at top of server action files
 - Server actions:
@@ -106,23 +117,27 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - Prefer server components by default; only use `"use client"` when necessary
 
 ### Error Handling
+
 - Validate inputs with Zod schemas and return structured errors
 - Catch database errors in try/catch blocks and return user-friendly messages
 - Example pattern:
   ```tsx
   try {
-    await prisma.visit.create({ data: { title, content, userId } });
+  	await prisma.visit.create({ data: { title, content, userId } });
   } catch {
-    return {
-      ...prevState,
-      errors: { form: "Unable to create the visit right now. Please try again." },
-    };
+  	return {
+  		...prevState,
+  		errors: {
+  			form: "Unable to create the visit right now. Please try again.",
+  		},
+  	};
   }
   ```
 - Don't expose raw error details to users; log them server-side if needed
 - Use `redirect()` for navigation after successful mutations
 
 ### Testing
+
 - Place test files next to source files with `.test.tsx` suffix
 - Use Vitest + Testing Library (`@testing-library/react`)
 - Structure:
@@ -141,6 +156,7 @@ Health Card is a Next.js 15 App Router project that helps users store and review
   - Test user-facing behavior, not implementation details
 
 ### UI Components
+
 - Use shadcn/ui-inspired primitives from `src/components/ui`
 - Leverage Radix UI primitives (`@radix-ui/react-*`) for accessible base components
 - Use `class-variance-authority` (cva) for component variants
@@ -148,29 +164,33 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - Example button usage:
   ```tsx
   <Button type="submit" variant="destructive" size="sm" disabled={isPending}>
-    {isPending ? "Saving..." : "Save Changes"}
+  	{isPending ? "Saving..." : "Save Changes"}
   </Button>
   ```
 
 ## Key Workflows
 
 ### Authentication
+
 - Handled via server actions in `src/app/(logged-out)` (login, register)
 - Configuration split between `auth.config.ts` (shared) and `src/auth.ts` (providers, callbacks)
 - Middleware in `middleware.ts` enforces route guards
 - Session validation: call `auth()` in server actions/components
 
 ### Logged-In Routes
+
 - Routes live in `src/app/(logged-in)`
 - Server actions in `src/app/(logged-in)/visits/actions.ts` handle CRUD for visits
 - Pagination logic in `src/app/(logged-in)/visits/utils.ts`, consumed by `VisitsPagination.tsx`
 
 ### Database Access
+
 - **Always** use the Prisma singleton from `@/lib/prisma`
 - Never instantiate new `PrismaClient()` instances (causes connection pool issues)
 - Keep Prisma logic server-side only (server components, server actions)
 
 ## Important Files & Directories
+
 - `auth.config.ts` - Shared Auth.js config, route callbacks
 - `src/auth.ts` - Auth.js handler, credentials provider, session callbacks
 - `middleware.ts` - Wires Auth.js into Next.js routing
@@ -179,15 +199,19 @@ Health Card is a Next.js 15 App Router project that helps users store and review
 - `prisma/schema.prisma` - Database schema for User and Visit models
 - `src/app/(logged-in)/visits/actions.ts` - Server actions for visit CRUD
 - `src/components/ui/` - Reusable UI primitives (button, card, input, etc.)
-- `biome.jsonc` - Biome configuration for linting and formatting
+- `eslint.config.mjs` - ESLint configuration
+- `.prettierrc` - Prettier configuration
 
 ## Environment Variables
+
 Required keys in `.env` (see `.env.example`):
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `AUTH_SECRET` - Secret for signing tokens
 - `NEXTAUTH_URL` - Site origin (e.g., `http://localhost:3000`)
 
 ## Dependency Management
+
 - Use `pnpm` to install packages (keeps `pnpm-lock.yaml` in sync)
 - Run `pnpm add <package>` to add dependencies
 - Prisma Client regenerates automatically via `postinstall` script

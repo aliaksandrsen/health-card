@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { notFound } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { getVisit } from "../../actions";
 import EditVisitPage from "./page";
 

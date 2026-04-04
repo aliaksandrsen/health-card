@@ -13,12 +13,12 @@ export const EmptyVisitsFallback = () => {
 	return (
 		<Card className="w-full max-w-xl border-dashed text-center">
 			<CardHeader className="flex flex-col items-center gap-4">
-				<span className="rounded-full bg-primary/10 p-4 text-primary">
+				<span className="bg-primary/10 text-primary rounded-full p-4">
 					<Stethoscope className="h-8 w-8" />
 				</span>
 				<CardTitle className="text-xl">No visits yet</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-4 text-muted-foreground">
+			<CardContent className="text-muted-foreground space-y-4">
 				<p>
 					Keep track of appointments, symptoms, and treatment notes in one
 					place. Log your first visit to build your health timeline.

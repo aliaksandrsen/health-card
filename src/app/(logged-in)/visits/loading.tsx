@@ -7,12 +7,7 @@ export default function VisitsLoading() {
 		<div className="flex flex-1 flex-col items-center justify-start">
 			<ul className="mx-auto w-full max-w-4xl space-y-6">
 				{Array.from({ length: VISITS_PER_PAGE }).map((_, index) => (
-					<li
-						key={`visit-skeleton-${
-							// biome-ignore lint/suspicious/noArrayIndexKey: ok
-							index
-						}`}
-					>
+					<li key={`visit-skeleton-${index}`}>
 						<Card className="shadow-md transition-shadow">
 							<CardHeader>
 								<Skeleton className="h-6 w-3/4" />

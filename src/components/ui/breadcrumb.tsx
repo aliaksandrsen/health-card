@@ -1,7 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
 
 const Breadcrumb = React.forwardRef<
@@ -12,7 +11,7 @@ const Breadcrumb = React.forwardRef<
 		ref={ref}
 		aria-label="breadcrumb"
 		className={cn(
-			"flex w-full items-center space-x-1 text-muted-foreground text-sm",
+			"text-muted-foreground flex w-full items-center space-x-1 text-sm",
 			className,
 		)}
 		{...props}
@@ -53,7 +52,7 @@ const BreadcrumbLink = React.forwardRef<
 	return (
 		<Comp
 			ref={ref}
-			className={cn("transition-colors hover:text-foreground", className)}
+			className={cn("hover:text-foreground transition-colors", className)}
 			{...props}
 		/>
 	);
@@ -67,7 +66,7 @@ const BreadcrumbPage = React.forwardRef<
 	<span
 		ref={ref}
 		aria-current="page"
-		className={cn("font-medium text-foreground", className)}
+		className={cn("text-foreground font-medium", className)}
 		{...props}
 	/>
 ));

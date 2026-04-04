@@ -12,14 +12,14 @@ import {
 export default function VisitNotFound() {
 	return (
 		<div className="flex flex-1 flex-col items-center justify-start p-6">
-			<Card className="w-full max-w-lg border-destructive/30 bg-card shadow-lg">
+			<Card className="border-destructive/30 bg-card w-full max-w-lg shadow-lg">
 				<CardHeader className="flex items-center gap-4 text-center">
-					<div className="rounded-full bg-destructive/10 p-3 text-destructive">
+					<div className="bg-destructive/10 text-destructive rounded-full p-3">
 						<Ban className="h-10 w-10" aria-hidden />
 					</div>
 					<CardTitle className="text-3xl">Visit Not Found</CardTitle>
 				</CardHeader>
-				<CardContent className="space-y-4 text-muted-foreground">
+				<CardContent className="text-muted-foreground space-y-4">
 					<p>
 						We looked everywhere but couldn&apos;t locate the visit you&apos;re
 						trying to view. It may have been deleted or the link could be

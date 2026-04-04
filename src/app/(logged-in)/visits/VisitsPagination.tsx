@@ -32,13 +32,7 @@ export const VisitsPagination = ({
 				{paginationItems.map((item, index) => {
 					if (item === "ellipsis") {
 						return (
-							<PaginationItem
-								key={`ellipsis-${
-									// biome-ignore lint/suspicious/noArrayIndexKey : it's static
-									index
-								}`}
-								aria-hidden
-							>
+							<PaginationItem key={`ellipsis-${index}`} aria-hidden>
 								<PaginationEllipsis />
 							</PaginationItem>
 						);

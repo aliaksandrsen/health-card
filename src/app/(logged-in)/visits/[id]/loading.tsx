@@ -4,7 +4,7 @@ export default function VisitLoading() {
 	return (
 		<div className="flex flex-1 flex-col items-center">
 			<div className="w-full max-w-3xl">
-				<div className="rounded-lg border bg-card p-6 shadow-md">
+				<div className="bg-card rounded-lg border p-6 shadow-md">
 					<Skeleton className="h-10 w-2/3" />
 
 					<div className="mt-6 space-y-4">

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/suspicious/noArrayIndexKey: fix */
 import Link from "next/link";
 import {
 	Breadcrumb,

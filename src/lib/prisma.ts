@@ -17,7 +17,6 @@ const prismaClientSingleton = () => {
 	return new PrismaClient({ adapter });
 };
 
-// biome-ignore lint/suspicious/noShadowRestrictedNames: solution from docs
 declare const globalThis: {
 	prismaGlobal: ReturnType<typeof prismaClientSingleton>;
 } & typeof global;

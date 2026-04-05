@@ -58,7 +58,8 @@
 			"@prisma/engines",
 			"bcrypt",
 			"prisma",
-			"sharp"
+			"sharp",
+			"unrs-resolver"
 		]
 	},
 	"scripts": {

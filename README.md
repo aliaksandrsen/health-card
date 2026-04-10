@@ -24,8 +24,8 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 ## Prerequisites
 
-- Node.js 20 or newer (Next.js 16 requires >= 20.9)
-- pnpm 10 (recommended via `corepack enable`)
+- Node.js 24.14.1 or newer (Next.js 16 requires >= 20.9)
+- pnpm 10.33.0 (recommended via `corepack enable`)
 - PostgreSQL database accessible from your development environment
 
 ## Environment variables
@@ -40,16 +40,20 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 
 ## Getting started
 
-1. Install dependencies.
+1. Enable Corepack and activate the required pnpm version.
+   ```bash
+   corepack enable
+   ```
+2. Install dependencies.
    ```bash
    pnpm install
    ```
-2. Apply the database schema.
+3. Apply the database schema.
    ```bash
    pnpm prisma migrate dev
    ```
    For production or CI environments run `pnpm prisma migrate deploy` instead.
-3. (Optional) Seed the database with demo users and visits.
+4. (Optional) Seed the database with demo users and visits.
    ```bash
    pnpm prisma db seed
    ```
@@ -90,8 +94,8 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 
 - Routes live in [src/app/](src/app/).
 - The app is split by auth state using route groups:
-  - logged-in experience in [src/app/(logged-in)/](src/app/(logged-in)/)
-  - logged-out auth pages in [src/app/(logged-out)/](src/app/(logged-out)/)
+  - logged-in experience in [src/app/(logged-in)/](<src/app/(logged-in)/>)
+  - logged-out auth pages in [src/app/(logged-out)/](<src/app/(logged-out)/>)
 - Shared UI primitives live in [src/components/ui/](src/components/ui/).
 - Shared app-level components live in [src/components/](src/components/).
 - Prisma schema, migrations, and seed logic live in [prisma/](prisma/).
@@ -104,7 +108,7 @@ Auth is intentionally split across three places:
 - [src/auth.ts](src/auth.ts) wires the credentials provider, bcrypt password verification, and JWT/session callbacks.
 - [middleware.ts](middleware.ts) applies auth enforcement across the app.
 
-Protected layouts and server actions call `auth()` and redirect unauthenticated users to `/login`, for example in [src/app/(logged-in)/layout.tsx](src/app/(logged-in)/layout.tsx) and [src/app/(logged-in)/visits/actions.ts](src/app/(logged-in)/visits/actions.ts).
+Protected layouts and server actions call `auth()` and redirect unauthenticated users to `/login`, for example in [src/app/(logged-in)/layout.tsx](<src/app/(logged-in)/layout.tsx>) and [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
 
 ### Data model and server-side flow
 
@@ -121,7 +125,7 @@ Most application state is server-driven:
 4. Prisma queries are scoped by `session.user.id`.
 5. Successful mutations redirect with `next/navigation`.
 
-Visit CRUD is centralized in [src/app/(logged-in)/visits/actions.ts](src/app/(logged-in)/visits/actions.ts).
+Visit CRUD is centralized in [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
 
 ### Prisma access
 

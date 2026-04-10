@@ -1,217 +1,91 @@
 # Agents Guide
 
-## Context
+[README.md](README.md) is the primary source for general repository documentation: project overview, setup, common commands, environment variables, and high-level architecture. This file is the source for agent-specific guidance: use it for implementation entry points, repo conventions, and editing patterns.
 
-Health Card is a Next.js 15 App Router project that helps users store and review healthcare visits. Authentication relies on Auth.js (NextAuth v5) with a credentials provider backed by Prisma and PostgreSQL. UI components live under `src/components`, and Tailwind CSS 4 utilities drive styling.
-
-## Commands
-
-### Development
-
-- `pnpm install` - Install dependencies
-- `pnpm dev` - Start development server with Turbopack
-- `pnpm build` - Build for production with Turbopack
-- `pnpm start` - Start production server
-
-### Database
-
-- `pnpm prisma migrate dev` - Run migrations in development
-- `pnpm migrate:deploy` - Deploy migrations to production
-- `pnpm prisma db seed` - Seed sample data
-- `pnpm prisma generate` - Generate Prisma Client (runs automatically on install)
-- `pnpm prisma studio` - Open Prisma Studio GUI
-
-### Testing
-
-- `pnpm test` - Run all tests in watch mode
-- `pnpm test -- --run` - Run all tests once
-- `pnpm test -- path/to/file.test.tsx` - Run a single test file
-- `pnpm test -- --ui` - Run tests with UI mode
-
-### Linting & Formatting
-
-- `pnpm lint` - Check for lint errors with ESLint
-- `pnpm format` - Format code with Prettier
-- `pnpm format:check` - Check formatting with Prettier
-- `pnpm typecheck` - Type-check with TypeScript (no emit)
-
-## Code Style Guidelines
-
-### Imports
-
-- Use `@/` path alias for imports from `src/` directory
-- Import order (enforced by ESLint `simple-import-sort`):
-  1. External packages (e.g., `react`, `next`, `zod`)
-  2. Internal aliases starting with `@/` (e.g., `@/auth`, `@/lib/prisma`, `@/components/ui/button`)
-- Group imports by type: dependencies first, then internal modules
-- Example:
-  ```tsx
-  import { redirect } from "next/navigation";
-  import z from "zod";
-  import { auth } from "@/auth";
-  import prisma from "@/lib/prisma";
-  import { Button } from "@/components/ui/button";
-  ```
-
-### Formatting
-
-- Use tabs for indentation (configured in Prettier)
-- Use semicolons (Prettier `semi: true`)
-- Double quotes for strings
-- Tailwind classes must be sorted (enforced by `prettier-plugin-tailwindcss`)
-- Use `cn()` helper from `@/lib/utils` to compose className strings
-- Example: `className={cn(buttonVariants({ variant, size, className }))}`
-
-### TypeScript
-
-- Strict mode enabled (`strict: true` in tsconfig)
-- Always provide explicit types for:
-  - Function parameters and return types
-  - Exported types and interfaces
-  - Server action input/output (e.g., `State`, `FetchVisitsInput`)
-- Use `type` for object shapes and union types
-- Use `interface` sparingly; prefer `type` for consistency
-- Leverage type inference for local variables when obvious
-- Example:
-  ```tsx
-  export type State = {
-  	errors?: {
-  		title?: string;
-  		content?: string;
-  		form?: string;
-  	};
-  };
-  ```
-
-### Naming Conventions
-
-- **Files**: camelCase for utilities, PascalCase for components
-  - Components: `EditVisitForm.tsx`, `VisitsPagination.tsx`
-  - Tests: `EditVisitForm.test.tsx` (colocated with source)
-  - Server actions: `actions.ts`
-  - Utilities: `utils.ts`, `prisma.ts`
-- **Variables/Functions**: camelCase (`createVisit`, `fetchVisits`, `isPending`)
-- **Types/Interfaces**: PascalCase (`State`, `FetchVisitsInput`, `NextAuthUser`)
-- **Constants**: camelCase for most, UPPER_SNAKE_CASE for env/config constants
-- **Components**: PascalCase function declarations (not arrow functions for named exports)
-  ```tsx
-  function Button({ className, ...props }: ButtonProps) {
-  	return <button className={cn(className)} {...props} />;
-  }
-  ```
-
-### React & Next.js Patterns
-
-- Use `"use client"` directive for client components (forms, interactive UI)
-- Use `"use server"` directive at top of server action files
-- Server actions:
-  - Must validate session with `auth()` and redirect to `/login` if unauthorized
-  - Accept `FormData` for form submissions
-  - Return structured error states (e.g., `{ errors: { field?: string } }`)
-  - Use Zod schemas for validation (`visitSchema.safeParse()`)
-  - Use `z.treeifyError()` to extract field-specific error messages
-- Client components:
-  - Use `useActionState` for form state management
-  - Use `isPending` to disable buttons during submission
-  - Display field errors with `aria-invalid`, `aria-describedby`, and `role="alert"`
-- Prefer server components by default; only use `"use client"` when necessary
-
-### Error Handling
-
-- Validate inputs with Zod schemas and return structured errors
-- Catch database errors in try/catch blocks and return user-friendly messages
-- Example pattern:
-  ```tsx
-  try {
-  	await prisma.visit.create({ data: { title, content, userId } });
-  } catch {
-  	return {
-  		...prevState,
-  		errors: {
-  			form: "Unable to create the visit right now. Please try again.",
-  		},
-  	};
-  }
-  ```
-- Don't expose raw error details to users; log them server-side if needed
-- Use `redirect()` for navigation after successful mutations
-
-### Testing
-
-- Place test files next to source files with `.test.tsx` suffix
-- Use Vitest + Testing Library (`@testing-library/react`)
-- Structure:
-  - Import from `vitest`: `describe`, `it`, `expect`, `vi`, `afterEach`
-  - Import from Testing Library: `render`, `screen`, `cleanup`, `userEvent`
-  - Mock server actions with `vi.mock()` and `vi.mocked()`
-- Best practices:
-  - **Assign selectors to variables** instead of embedding in `expect`:
-    ```tsx
-    const titleInput = screen.getByLabelText(/title/i);
-    expect(titleInput).toHaveValue("Initial title");
-    ```
-  - Avoid mocking UI components; keep tests close to integration
-  - Use `cleanup()` in `afterEach()` to reset DOM
-  - Use `userEvent` for realistic user interactions (prefer over `fireEvent`)
-  - Test user-facing behavior, not implementation details
-
-### UI Components
-
-- Use shadcn/ui-inspired primitives from `src/components/ui`
-- Leverage Radix UI primitives (`@radix-ui/react-*`) for accessible base components
-- Use `class-variance-authority` (cva) for component variants
-- Always compose classes with `cn()` helper to merge Tailwind utilities safely
-- Example button usage:
-  ```tsx
-  <Button type="submit" variant="destructive" size="sm" disabled={isPending}>
-  	{isPending ? "Saving..." : "Save Changes"}
-  </Button>
-  ```
-
-## Key Workflows
+## Where to start by area
 
 ### Authentication
 
-- Handled via server actions in `src/app/(logged-out)` (login, register)
-- Configuration split between `auth.config.ts` (shared) and `src/auth.ts` (providers, callbacks)
-- Middleware in `middleware.ts` enforces route guards
-- Session validation: call `auth()` in server actions/components
+- Route authorization rules live in [auth.config.ts](auth.config.ts).
+- Auth.js provider wiring, bcrypt password verification, and session/JWT enrichment live in [src/auth.ts](src/auth.ts).
+- Middleware integration lives in [middleware.ts](middleware.ts).
+- Protected server code should call `auth()` and redirect to `/login` when `session?.user` is missing.
 
-### Logged-In Routes
+### Visits domain
 
-- Routes live in `src/app/(logged-in)`
-- Server actions in `src/app/(logged-in)/visits/actions.ts` handle CRUD for visits
-- Pagination logic in `src/app/(logged-in)/visits/utils.ts`, consumed by `VisitsPagination.tsx`
+- Visit CRUD is centralized in [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
+- Visit pages, pagination UI, and route-local components live under [src/app/(logged-in)/visits/](<src/app/(logged-in)/visits/>).
+- When changing visit behavior, check both the route files and colocated tests before editing.
 
-### Database Access
+### Shared UI
 
-- **Always** use the Prisma singleton from `@/lib/prisma`
-- Never instantiate new `PrismaClient()` instances (causes connection pool issues)
-- Keep Prisma logic server-side only (server components, server actions)
+- Reusable primitives live in [src/components/ui/](src/components/ui/).
+- Cross-route components live in [src/components/](src/components/).
+- Authenticated shell components such as the header live alongside the logged-in layout in [src/app/(logged-in)/components/](<src/app/(logged-in)/components/>).
 
-## Important Files & Directories
+## Implementation rules
 
-- `auth.config.ts` - Shared Auth.js config, route callbacks
-- `src/auth.ts` - Auth.js handler, credentials provider, session callbacks
-- `middleware.ts` - Wires Auth.js into Next.js routing
-- `src/lib/prisma.ts` - Prisma Client singleton (import from here)
-- `src/lib/utils.ts` - Utility functions (`cn` helper)
-- `prisma/schema.prisma` - Database schema for User and Visit models
-- `src/app/(logged-in)/visits/actions.ts` - Server actions for visit CRUD
-- `src/components/ui/` - Reusable UI primitives (button, card, input, etc.)
-- `eslint.config.mjs` - ESLint configuration
-- `.prettierrc` - Prettier configuration
+### Server and client boundaries
 
-## Environment Variables
+- Prefer Server Components by default.
+- Add `"use client"` only for interactive UI, browser-only hooks, or form state that must run on the client.
+- Keep Prisma usage on the server side only.
+- Server actions should keep the existing pattern: validate auth, validate input with Zod, scope queries by the authenticated user, then redirect on success.
 
-Required keys in `.env` (see `.env.example`):
+### Prisma
 
-- `DATABASE_URL` - PostgreSQL connection string
-- `AUTH_SECRET` - Secret for signing tokens
-- `NEXTAUTH_URL` - Site origin (e.g., `http://localhost:3000`)
+- Always import the shared Prisma client from [src/lib/prisma.ts](src/lib/prisma.ts).
+- Do not create ad-hoc `new PrismaClient()` instances.
+- This repo uses `@prisma/adapter-pg` through `PrismaPg`, so follow the existing setup instead of switching connection styles.
 
-## Dependency Management
+### Auth/session assumptions
 
-- Use `pnpm` to install packages (keeps `pnpm-lock.yaml` in sync)
-- Run `pnpm add <package>` to add dependencies
-- Prisma Client regenerates automatically via `postinstall` script
+- `session.user.id` is populated in the NextAuth callbacks in [src/auth.ts](src/auth.ts).
+- User-owned queries should continue to scope by that ID.
+- Public-vs-protected route behavior is controlled centrally in [auth.config.ts](auth.config.ts); avoid duplicating route-guard rules in many places.
+
+## Repo conventions
+
+### Imports and paths
+
+- Use the `@/` alias for imports from `src/`.
+- Keep imports compatible with the existing `simple-import-sort` ESLint setup.
+
+### Formatting
+
+- Prettier uses tabs, semicolons, and double quotes.
+- Tailwind class ordering is handled by `prettier-plugin-tailwindcss`.
+- Use `cn()` from [src/lib/utils.ts](src/lib/utils.ts) when composing class names.
+
+### TypeScript
+
+- The project uses strict TypeScript.
+- Prefer `type` aliases over `interface` unless there is a specific reason not to.
+- Match existing explicit typing around exported server action state and props.
+
+### Component/file patterns
+
+- Components use PascalCase filenames.
+- Route-local mutations usually live in `actions.ts`.
+- Tests are colocated with implementation using `*.test.tsx`.
+
+## Testing guidance
+
+- Vitest runs in `jsdom`; setup is in [vitest.setup.ts](vitest.setup.ts).
+- Follow existing test patterns in:
+  - [src/app/(logged-out)/login/page.test.tsx](<src/app/(logged-out)/login/page.test.tsx>)
+  - [src/app/(logged-in)/page.test.tsx](<src/app/(logged-in)/page.test.tsx>)
+  - [src/components/VisitPreviewCard.test.tsx](src/components/VisitPreviewCard.test.tsx)
+- Prefer testing user-visible behavior over implementation details.
+- When editing route-level forms or server-action-backed UI, update colocated tests in the same area.
+
+## CI-aware workflow
+
+- CI runs `pnpm typecheck`, `pnpm lint`, `pnpm test:coverage`, and `pnpm build` from [.github/workflows/ci.yml](.github/workflows/ci.yml).
+- SonarQube also runs in CI, so keep coverage and static-analysis cleanliness in mind when changing behavior.
+
+## Documentation hierarchy
+
+- Put primary project documentation in [README.md](README.md).
+- Keep this file focused on agent-specific guidance that would be noisy or overly implementation-oriented in the README.
+- Keep [CLAUDE.md](CLAUDE.md) thin and layered on top of this file.

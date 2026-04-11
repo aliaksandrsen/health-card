@@ -24,9 +24,22 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 ## Prerequisites
 
-- Node.js 24.14.1 or newer (Next.js 16 requires >= 20.9)
-- pnpm 10.33.0 (recommended via `corepack enable`)
+- Node.js 24.14.1
+- pnpm 10.33.0
 - PostgreSQL database accessible from your development environment
+
+## Install Node.js and pnpm
+
+### Install with nvm (recommended)
+
+```bash
+nvm install 24.14.1
+nvm use 24.14.1
+corepack enable
+corepack prepare pnpm@10.33.0 --activate
+```
+
+If `node --version` does not print `v24.14.1`, install the required Node.js version first.
 
 ## Environment variables
 
@@ -40,20 +53,27 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 
 ## Getting started
 
-1. Enable Corepack and activate the required pnpm version.
+1. Install Node.js 24.14.1 and enable pnpm.
    ```bash
+   nvm install 24.14.1
+   nvm use 24.14.1
    corepack enable
+   corepack prepare pnpm@10.33.0 --activate
    ```
-2. Install dependencies.
+2. Verify that pnpm is available.
+   ```bash
+   pnpm --version
+   ```
+3. Install dependencies.
    ```bash
    pnpm install
    ```
-3. Apply the database schema.
+4. Apply the database schema.
    ```bash
    pnpm prisma migrate dev
    ```
    For production or CI environments run `pnpm prisma migrate deploy` instead.
-4. (Optional) Seed the database with demo users and visits.
+5. (Optional) Seed the database with demo users and visits.
    ```bash
    pnpm prisma db seed
    ```

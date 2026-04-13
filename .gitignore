@@ -43,3 +43,6 @@ next-env.d.ts
 
 # qoder IDE
 .qoder
+
+# local Claude settings
+.claude/settings.local.json

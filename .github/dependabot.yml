@@ -15,11 +15,20 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: [">=25.0.0"]
+      # Keep ESLint on v9 until ESLint 10 peer support is declared across:
+      # eslint-config-next
+      # @next/eslint-plugin-next
+      # eslint-plugin-react
+      # eslint-plugin-react-hooks
+      # eslint-plugin-import
+      # eslint-plugin-jsx-a11y
+      - dependency-name: "eslint"
+        versions: [">=10.0.0"]
     groups:
       react:
         patterns:
-          - 'react'
-          - 'react-dom'
+          - "react"
+          - "react-dom"
       next:
         patterns:
           - "next"

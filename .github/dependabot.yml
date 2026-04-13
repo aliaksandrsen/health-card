@@ -46,3 +46,11 @@ updates:
         patterns:
           - "vitest"
           - "@vitest/coverage-v8"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 3

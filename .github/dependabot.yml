@@ -15,3 +15,25 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         versions: [">=25.0.0"]
+    groups:
+      react:
+        patterns:
+          - 'react'
+          - 'react-dom'
+      next:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/client"
+          - "@prisma/adapter-pg"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/postcss"
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/coverage-v8"

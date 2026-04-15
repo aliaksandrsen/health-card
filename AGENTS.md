@@ -46,6 +46,11 @@
 
 ## Repo conventions
 
+### Runtime environment
+
+- Always use `nvm` to run and switch Node.js versions in this repository.
+- Use Node.js `24.14.1` for installs, tests, builds, and other project commands.
+
 ### Imports and paths
 
 - Use the `@/` alias for imports from `src/`.

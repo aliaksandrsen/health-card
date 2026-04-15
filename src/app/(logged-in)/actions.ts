@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
-import prisma from "@/lib/prisma";
+import { getRecentVisits as getRecentVisitsForUser } from "@/lib/db/visits";
 import { PREVIEW_COUNT } from "./const";
 
 export const signOutAction = async () => {
@@ -18,9 +18,5 @@ export const getRecentVisits = async () => {
 
 	const userId = +session.user.id;
 
-	return prisma.visit.findMany({
-		orderBy: { createdAt: "desc" },
-		take: PREVIEW_COUNT,
-		where: { userId },
-	});
+	return getRecentVisitsForUser(userId, PREVIEW_COUNT);
 };

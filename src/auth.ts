@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import NextAuth, { type User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "@/lib/prisma";
+import { findUserByEmail } from "@/lib/db/users";
 import { authConfig } from "../auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -13,9 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					throw new Error("Invalid credentials");
 				}
 
-				const user = await prisma.user.findUnique({
-					where: { email: credentials.email as string },
-				});
+				const user = await findUserByEmail(credentials.email as string);
 
 				if (!user) {
 					throw new Error("Incorrect credentials");

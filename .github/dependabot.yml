@@ -33,11 +33,11 @@ updates:
         patterns:
           - "next"
           - "eslint-config-next"
-      prisma:
+      drizzle:
         patterns:
-          - "prisma"
-          - "@prisma/client"
-          - "@prisma/adapter-pg"
+          - "drizzle-orm"
+          - "drizzle-kit"
+          - "postgres"
       tailwind:
         patterns:
           - "tailwindcss"

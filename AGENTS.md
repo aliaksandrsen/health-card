@@ -29,14 +29,14 @@
 
 - Prefer Server Components by default.
 - Add `"use client"` only for interactive UI, browser-only hooks, or form state that must run on the client.
-- Keep Prisma usage on the server side only.
+- Keep database usage on the server side only.
 - Server actions should keep the existing pattern: validate auth, validate input with Zod, scope queries by the authenticated user, then redirect on success.
 
-### Prisma
+### Database access
 
-- Always import the shared Prisma client from [src/lib/prisma.ts](src/lib/prisma.ts).
-- Do not create ad-hoc `new PrismaClient()` instances.
-- This repo uses `@prisma/adapter-pg` through `PrismaPg`, so follow the existing setup instead of switching connection styles.
+- Use the shared Drizzle client from [src/lib/drizzle.ts](src/lib/drizzle.ts).
+- Prefer the data-access helpers in [src/lib/db/](src/lib/db/) instead of issuing raw queries from route files.
+- Do not create ad-hoc database clients in app code.
 
 ### Auth/session assumptions
 

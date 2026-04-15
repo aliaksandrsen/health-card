@@ -1,10 +1,9 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
 import { hash } from "bcrypt";
 import { z } from "zod";
 import { passwordMatchSchema } from "@/app/validation/passwordMatchSchema";
-import prisma from "@/lib/prisma";
+import { createUser, DuplicateEmailError } from "@/lib/db/users";
 
 const newUserSchema = z
 	.object({
@@ -40,20 +39,16 @@ export const registerUser = async ({
 
 		const hashedPassword = await hash(password, 10);
 
-		await prisma.user.create({
-			data: {
-				name: newUserValues.data.name,
-				email: newUserValues.data.email,
-				password: hashedPassword,
-			},
+		await createUser({
+			name: newUserValues.data.name,
+			email: newUserValues.data.email,
+			password: hashedPassword,
 		});
 	} catch (e: unknown) {
-		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-			if (e.code === "P2002") {
-				return {
-					error: "An account is already registered with this email address",
-				};
-			}
+		if (e instanceof DuplicateEmailError) {
+			return {
+				error: "An account is already registered with this email address",
+			};
 		}
 		return {
 			error: "An error occurred.",

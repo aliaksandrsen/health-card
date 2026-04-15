@@ -3,7 +3,13 @@
 import { redirect } from "next/navigation";
 import z from "zod";
 import { auth } from "@/auth";
-import prisma from "@/lib/prisma";
+import {
+	createVisit as createVisitRecord,
+	deleteVisit as deleteVisitRecord,
+	getVisitById,
+	listVisits,
+	updateVisit as updateVisitRecord,
+} from "@/lib/db/visits";
 
 type FetchVisitsInput = {
 	skip: number;
@@ -19,19 +25,7 @@ export const fetchVisits = async ({ skip, take }: FetchVisitsInput) => {
 
 	const userId = +session.user.id;
 
-	const [visits, totalVisits] = await Promise.all([
-		prisma.visit.findMany({
-			skip,
-			take,
-			orderBy: { createdAt: "desc" },
-			where: { userId },
-		}),
-		prisma.visit.count({
-			where: { userId },
-		}),
-	]);
-
-	return { visits, totalVisits };
+	return listVisits({ skip, take, userId });
 };
 
 export const getVisit = async (visitId: number) => {
@@ -43,9 +37,7 @@ export const getVisit = async (visitId: number) => {
 
 	const userId = +session.user.id;
 
-	return prisma.visit.findFirst({
-		where: { id: visitId, userId },
-	});
+	return getVisitById(visitId, userId);
 };
 
 const visitSchema = z.object({
@@ -105,12 +97,10 @@ export const createVisit = async (
 	const userId = +session.user.id;
 
 	try {
-		await prisma.visit.create({
-			data: {
-				title,
-				content,
-				userId,
-			},
+		await createVisitRecord({
+			title,
+			content,
+			userId,
 		});
 	} catch {
 		return {
@@ -161,18 +151,13 @@ export const updateVisit = async (
 	const userId = +session.user.id;
 
 	try {
-		const result = await prisma.visit.updateMany({
-			where: {
-				id: visitId,
-				userId,
-			},
-			data: {
-				title,
-				content,
-			},
+		const updated = await updateVisitRecord(visitId, {
+			title,
+			content,
+			userId,
 		});
 
-		if (result.count === 0) {
+		if (!updated) {
 			return {
 				...prevState,
 				errors: {
@@ -201,12 +186,7 @@ export const deleteVisit = async (visitId: number) => {
 
 	const userId = +session.user.id;
 
-	await prisma.visit.delete({
-		where: {
-			id: visitId,
-			userId,
-		},
-	});
+	await deleteVisitRecord(visitId, userId);
 
 	redirect("/visits");
 };

@@ -6,7 +6,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 ## Features
 
-- Credentials-based authentication powered by Auth.js (NextAuth) and Prisma
+- Credentials-based authentication powered by Auth.js (NextAuth) and Drizzle ORM
 - Registration and sign-in flows with React Hook Form and Zod validation
 - Dashboard that shows up to six recent visits on the home page
 - Paginated visits index (four items per page) with quick links to visit details
@@ -17,7 +17,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 - Next.js 16 App Router with Server Components and Server Actions
 - Auth.js (NextAuth v5) credentials provider for username/password auth
-- Prisma ORM targeting PostgreSQL through `@prisma/adapter-pg`
+- Drizzle ORM targeting PostgreSQL through `postgres`
 - React 19 with TypeScript
 - Tailwind CSS 4, tw-animate, class-variance-authority, and Radix UI primitives
 - ESLint + Prettier for linting/formatting and Vitest with Testing Library for tests
@@ -68,14 +68,15 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
    ```bash
    pnpm install
    ```
-4. Apply the database schema.
+4. Generate and apply the database migrations.
    ```bash
-   pnpm prisma migrate dev
+   pnpm db:generate
+   pnpm db:migrate
    ```
-   For production or CI environments run `pnpm prisma migrate deploy` instead.
+   For production or CI environments run `pnpm migrate:deploy` instead.
 5. (Optional) Seed the database with demo users and visits.
    ```bash
-   pnpm prisma db seed
+   pnpm db:seed
    ```
 
 ## Common commands
@@ -103,10 +104,11 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 
 ### Database
 
-- `pnpm prisma migrate dev` - create/apply development migrations
-- `pnpm migrate:deploy` - apply existing migrations in deployment environments
-- `pnpm prisma generate` - regenerate Prisma Client
-- `pnpm prisma studio` - open Prisma Studio
+- `pnpm db:generate` - generate SQL migrations from the Drizzle schema
+- `pnpm db:migrate` - apply pending Drizzle migrations locally
+- `pnpm migrate:deploy` - apply pending Drizzle migrations in deployment environments
+- `pnpm db:studio` - open Drizzle Studio
+- `pnpm db:seed` - seed the database with demo data
 
 ## Architecture overview
 
@@ -118,7 +120,9 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
   - logged-out auth pages in [src/app/(logged-out)/](<src/app/(logged-out)/>)
 - Shared UI primitives live in [src/components/ui/](src/components/ui/).
 - Shared app-level components live in [src/components/](src/components/).
-- Prisma schema, migrations, and seed logic live in [prisma/](prisma/).
+- Drizzle schema and database client live in [src/lib/db/](src/lib/db/) and [src/lib/drizzle.ts](src/lib/drizzle.ts).
+- Drizzle migrations live in [drizzle/](drizzle/).
+- Seed logic lives in [scripts/seed.ts](scripts/seed.ts).
 
 ### Auth flow
 
@@ -132,7 +136,7 @@ Protected layouts and server actions call `auth()` and redirect unauthenticated 
 
 ### Data model and server-side flow
 
-The Prisma schema in [prisma/schema.prisma](prisma/schema.prisma) contains two core models:
+The Drizzle schema in [src/lib/db/schema.ts](src/lib/db/schema.ts) contains two core models:
 
 - `User`
 - `Visit` linked to a user
@@ -142,14 +146,14 @@ Most application state is server-driven:
 1. A Server Component or form triggers a server action.
 2. The action resolves the current session with `auth()`.
 3. Input is validated with Zod.
-4. Prisma queries are scoped by `session.user.id`.
+4. Database queries are scoped by `session.user.id`.
 5. Successful mutations redirect with `next/navigation`.
 
 Visit CRUD is centralized in [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
 
-### Prisma access
+### Database access
 
-Use the shared Prisma client from [src/lib/prisma.ts](src/lib/prisma.ts). In development it is cached on `globalThis`, and when `DATABASE_URL` is missing it returns a throwing proxy so builds/tests can still start until DB access is actually attempted.
+Use the shared Drizzle client from [src/lib/drizzle.ts](src/lib/drizzle.ts) together with the data-access helpers in [src/lib/db/](src/lib/db/). In development the client is cached on `globalThis`, and when `DATABASE_URL` is missing it returns a throwing proxy so builds/tests can still start until DB access is actually attempted.
 
 ### UI and state management
 

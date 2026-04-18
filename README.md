@@ -51,6 +51,54 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 | `AUTH_SECRET`  | Secret used by Better Auth to sign and encrypt tokens (`openssl rand -base64 32`) |
 | `BETTER_AUTH_URL` | Site origin used for auth callbacks locally, usually `http://localhost:3000` |
 
+### Vercel environments matrix
+
+This project uses one Neon Postgres project with DB branches and maps them by Vercel environment.
+
+| Vercel environment | Purpose | Local env file | Typical Neon branch |
+| --- | --- | --- | --- |
+| `development` | Daily local development | `.env.development.local` | `vercel-dev` |
+| `preview` | Pull request validation before merge | `.env.preview.local` | `preview/*` |
+| `production` | Live application on `main` | `.env.production.local` | `production` |
+
+Use these commands to sync local env files from Vercel:
+
+```bash
+pnpm env:pull:dev
+pnpm env:pull:preview
+pnpm env:pull:prod
+```
+
+### Preview branch behavior
+
+- Vercel creates a Preview deployment for pull requests.
+- `DATABASE_URL` for Preview can be set globally for all preview deployments or as a branch override for a specific PR branch.
+- If `DATABASE_URL` exists only as branch override for one branch, other preview branches can deploy without DB access.
+- To pull branch-specific Preview env locally, use:
+
+```bash
+vercel env pull .env.preview.local --environment=preview --git-branch <branch-name>
+```
+
+### Migration execution policy
+
+- Local development:
+  - `pnpm db:generate` (generate migration SQL)
+  - `pnpm db:migrate` (apply pending local migrations)
+- Vercel deployments:
+  - Build command is `pnpm build:vercel` (see [vercel.json](vercel.json)).
+  - `build:vercel` runs `pnpm migrate:deploy` for `VERCEL_ENV=preview` and `VERCEL_ENV=production`, then runs `next build --turbopack`.
+
+If auth fails with errors like `relation "account" does not exist`, it usually means migrations were not applied for that DB branch.
+
+### Troubleshooting auth in preview/production
+
+1. Check `DATABASE_URL` for the exact environment and branch in Vercel.
+2. Confirm Vercel Project Settings -> Build Command is `pnpm build:vercel`.
+3. Verify `migrate:deploy` ran in deployment build logs.
+4. Check runtime logs for Better Auth/DB errors after deployment.
+5. Ensure `DATABASE_URL` values differ across `development`, `preview`, and `production`.
+
 ## Getting started
 
 1. Install Node.js 24.14.1 and enable pnpm.

@@ -69,6 +69,7 @@
 		"preview": "dotenv -e .env.preview.local -- VERCEL_ENV=preview next start",
 		"prod": "dotenv -e .env.production.local -- VERCEL_ENV=production next start",
 		"build": "next build --turbopack",
+		"build:vercel": "if [ \"$VERCEL_ENV\" = \"production\" ]; then pnpm migrate:deploy; else echo \"Skipping DB migrations for $VERCEL_ENV\"; fi && next build --turbopack",
 		"start": "next start",
 		"lint": "eslint .",
 		"format": "prettier . --write",

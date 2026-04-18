@@ -1,7 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import z from "zod";
-import { signIn } from "@/auth";
+import { auth } from "@/auth";
 
 export const loginWithCredentials = async ({
 	email,
@@ -27,12 +28,25 @@ export const loginWithCredentials = async ({
 	}
 
 	try {
-		await signIn("credentials", {
-			email,
-			password,
-			redirect: false,
+		await auth.api.signInEmail({
+			body: {
+				email: loginValidation.data.email,
+				password: loginValidation.data.password,
+			},
+			headers: await headers(),
 		});
-	} catch {
+	} catch (error: unknown) {
+		if (
+			typeof error === "object" &&
+			error !== null &&
+			"code" in error &&
+			error.code === "INVALID_EMAIL_OR_PASSWORD"
+		) {
+			return {
+				error: "Incorrect email or password",
+			};
+		}
+
 		return {
 			error: "Incorrect email or password",
 		};

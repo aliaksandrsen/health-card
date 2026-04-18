@@ -2,7 +2,7 @@ import "dotenv/config";
 import { hash } from "bcrypt";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { users, visits } from "../src/lib/db/schema";
+import { accounts, users, visits } from "../src/lib/db/schema";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -14,14 +14,29 @@ const client = postgres(connectionString);
 const db = drizzle(client);
 
 async function main() {
+	const passwordHash = await hash("1234", 10);
+
 	const [alex] = await db
 		.insert(users)
 		.values({
 			email: "test@test.com",
 			name: "User Dev",
-			password: await hash("1234", 10),
 		})
-		.returning({ id: users.id });
+		.returning({
+			id: users.id,
+			createdAt: users.createdAt,
+			updatedAt: users.updatedAt,
+		});
+
+	await db.insert(accounts).values({
+		id: `seed-credential-${alex.id}`,
+		accountId: alex.id.toString(),
+		providerId: "credential",
+		userId: alex.id,
+		password: passwordHash,
+		createdAt: alex.createdAt,
+		updatedAt: alex.updatedAt,
+	});
 
 	await db.insert(visits).values([
 		{

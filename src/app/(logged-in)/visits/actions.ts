@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import z from "zod";
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth/get-session";
 import {
 	createVisit as createVisitRecord,
 	deleteVisit as deleteVisitRecord,
@@ -17,25 +17,25 @@ type FetchVisitsInput = {
 };
 
 export const fetchVisits = async ({ skip, take }: FetchVisitsInput) => {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");
 	}
 
-	const userId = +session.user.id;
+	const userId = Number(session.user.id);
 
 	return listVisits({ skip, take, userId });
 };
 
 export const getVisit = async (visitId: number) => {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");
 	}
 
-	const userId = +session.user.id;
+	const userId = Number(session.user.id);
 
 	return getVisitById(visitId, userId);
 };
@@ -65,7 +65,7 @@ export const createVisit = async (
 	prevState: State,
 	formData: FormData,
 ): Promise<State> => {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");
@@ -94,7 +94,7 @@ export const createVisit = async (
 	}
 
 	const { title, content } = validatedFields.data;
-	const userId = +session.user.id;
+	const userId = Number(session.user.id);
 
 	try {
 		await createVisitRecord({
@@ -119,7 +119,7 @@ export const updateVisit = async (
 	prevState: State,
 	formData: FormData,
 ): Promise<State> => {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");
@@ -148,7 +148,7 @@ export const updateVisit = async (
 	}
 
 	const { title, content } = validatedFields.data;
-	const userId = +session.user.id;
+	const userId = Number(session.user.id);
 
 	try {
 		const updated = await updateVisitRecord(visitId, {
@@ -178,13 +178,13 @@ export const updateVisit = async (
 };
 
 export const deleteVisit = async (visitId: number) => {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");
 	}
 
-	const userId = +session.user.id;
+	const userId = Number(session.user.id);
 
 	await deleteVisitRecord(visitId, userId);
 

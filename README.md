@@ -6,7 +6,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 
 ## Features
 
-- Credentials-based authentication powered by Auth.js (NextAuth) and Drizzle ORM
+- Credentials-based authentication powered by Better Auth and Drizzle ORM
 - Registration and sign-in flows with React Hook Form and Zod validation
 - Dashboard that shows up to six recent visits on the home page
 - Paginated visits index (four items per page) with quick links to visit details
@@ -16,7 +16,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 ## Tech Stack
 
 - Next.js 16 App Router with Server Components and Server Actions
-- Auth.js (NextAuth v5) credentials provider for username/password auth
+- Better Auth credentials flow for username/password auth
 - Drizzle ORM targeting PostgreSQL through `postgres`
 - React 19 with TypeScript
 - Tailwind CSS 4, tw-animate, class-variance-authority, and Radix UI primitives
@@ -48,8 +48,8 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 | Variable       | Description                                                                      |
 | -------------- | -------------------------------------------------------------------------------- |
 | `DATABASE_URL` | PostgreSQL connection, e.g. `postgresql://user:password@localhost:5432/your_app` |
-| `AUTH_SECRET`  | Secret used by Auth.js to sign and encrypt tokens (`openssl rand -base64 32`)    |
-| `NEXTAUTH_URL` | Site origin used for auth callbacks locally, usually `http://localhost:3000`     |
+| `AUTH_SECRET`  | Secret used by Better Auth to sign and encrypt tokens (`openssl rand -base64 32`) |
+| `BETTER_AUTH_URL` | Site origin used for auth callbacks locally, usually `http://localhost:3000` |
 
 ## Getting started
 
@@ -128,11 +128,11 @@ Copy [.env.example](.env.example) to `.env` and provide the values below.
 
 Auth is intentionally split across three places:
 
-- [auth.config.ts](auth.config.ts) defines public/protected route behavior.
-- [src/auth.ts](src/auth.ts) wires the credentials provider, bcrypt password verification, and JWT/session callbacks.
-- [middleware.ts](middleware.ts) applies auth enforcement across the app.
+- [src/auth.ts](src/auth.ts) configures Better Auth and adapter mapping.
+- [src/lib/auth/get-session.ts](src/lib/auth/get-session.ts) retrieves session in server code via request headers.
+- [middleware.ts](middleware.ts) applies public/protected route redirects across the app.
 
-Protected layouts and server actions call `auth()` and redirect unauthenticated users to `/login`, for example in [src/app/(logged-in)/layout.tsx](<src/app/(logged-in)/layout.tsx>) and [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
+Protected layouts and server actions call `getSession()` and redirect unauthenticated users to `/login`, for example in [src/app/(logged-in)/layout.tsx](<src/app/(logged-in)/layout.tsx>) and [src/app/(logged-in)/visits/actions.ts](<src/app/(logged-in)/visits/actions.ts>).
 
 ### Data model and server-side flow
 
@@ -144,7 +144,7 @@ The Drizzle schema in [src/lib/db/schema.ts](src/lib/db/schema.ts) contains two 
 Most application state is server-driven:
 
 1. A Server Component or form triggers a server action.
-2. The action resolves the current session with `auth()`.
+2. The action resolves the current session with `getSession()`.
 3. Input is validated with Zod.
 4. Database queries are scoped by `session.user.id`.
 5. Successful mutations redirect with `next/navigation`.

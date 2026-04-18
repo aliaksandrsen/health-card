@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth/get-session";
 import { Header } from "./components/Header";
 
 type LoggedInLayoutProps = {
@@ -9,7 +9,7 @@ type LoggedInLayoutProps = {
 export default async function LoggedInLayout({
 	children,
 }: LoggedInLayoutProps) {
-	const session = await auth();
+	const session = await getSession();
 
 	if (!session?.user) {
 		redirect("/login");

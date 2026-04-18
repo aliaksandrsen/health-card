@@ -1,9 +1,9 @@
 "use server";
 
-import { hash } from "bcrypt";
+import { headers } from "next/headers";
 import { z } from "zod";
+import { auth } from "@/auth";
 import { passwordMatchSchema } from "@/app/validation/passwordMatchSchema";
-import { createUser, DuplicateEmailError } from "@/lib/db/users";
 
 const newUserSchema = z
 	.object({
@@ -37,19 +37,26 @@ export const registerUser = async ({
 			};
 		}
 
-		const hashedPassword = await hash(password, 10);
-
-		await createUser({
-			name: newUserValues.data.name,
-			email: newUserValues.data.email,
-			password: hashedPassword,
+		await auth.api.signUpEmail({
+			body: {
+				name: newUserValues.data.name,
+				email: newUserValues.data.email,
+				password: newUserValues.data.password,
+			},
+			headers: await headers(),
 		});
-	} catch (e: unknown) {
-		if (e instanceof DuplicateEmailError) {
+	} catch (error: unknown) {
+		if (
+			typeof error === "object" &&
+			error !== null &&
+			"code" in error &&
+			error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
+		) {
 			return {
 				error: "An account is already registered with this email address",
 			};
 		}
+
 		return {
 			error: "An error occurred.",
 		};

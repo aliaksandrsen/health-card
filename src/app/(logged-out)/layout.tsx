@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth/get-session";
 
 type LoggedOutLayoutProps = {
 	readonly children: React.ReactNode;
@@ -8,7 +8,7 @@ type LoggedOutLayoutProps = {
 export default async function LoggedOutLayout({
 	children,
 }: LoggedOutLayoutProps) {
-	const session = await auth();
+	const session = await getSession();
 
 	if (session?.user?.id) {
 		redirect("/");

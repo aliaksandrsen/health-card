@@ -6,10 +6,10 @@
 
 ### Authentication
 
-- Route authorization rules live in [auth.config.ts](auth.config.ts).
-- Auth.js provider wiring, bcrypt password verification, and session/JWT enrichment live in [src/auth.ts](src/auth.ts).
+- Better Auth configuration and adapter mapping live in [src/auth.ts](src/auth.ts).
+- Session helper for server code lives in [src/lib/auth/get-session.ts](src/lib/auth/get-session.ts).
 - Middleware integration lives in [middleware.ts](middleware.ts).
-- Protected server code should call `auth()` and redirect to `/login` when `session?.user` is missing.
+- Protected server code should call `getSession()` and redirect to `/login` when `session?.user` is missing.
 
 ### Visits domain
 
@@ -40,9 +40,9 @@
 
 ### Auth/session assumptions
 
-- `session.user.id` is populated in the NextAuth callbacks in [src/auth.ts](src/auth.ts).
+- `session.user.id` comes from Better Auth session in [src/lib/auth/get-session.ts](src/lib/auth/get-session.ts).
 - User-owned queries should continue to scope by that ID.
-- Public-vs-protected route behavior is controlled centrally in [auth.config.ts](auth.config.ts); avoid duplicating route-guard rules in many places.
+- Public-vs-protected route behavior is controlled centrally in [middleware.ts](middleware.ts); avoid duplicating route-guard rules in many places.
 
 ## Repo conventions
 

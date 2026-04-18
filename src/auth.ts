@@ -1,55 +1,64 @@
 import bcrypt from "bcrypt";
-import NextAuth, { type User as NextAuthUser } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { findUserByEmail } from "@/lib/db/users";
-import { authConfig } from "../auth.config";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
+import db from "@/lib/drizzle";
+import { accounts, sessions, users, verifications } from "@/lib/db/schema";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-	...authConfig,
-	providers: [
-		CredentialsProvider({
-			authorize: async (credentials) => {
-				if (!credentials?.email || !credentials?.password) {
-					throw new Error("Invalid credentials");
-				}
-
-				const user = await findUserByEmail(credentials.email as string);
-
-				if (!user) {
-					throw new Error("Incorrect credentials");
-				}
-
-				const isCorrectPassword = await bcrypt.compare(
-					credentials.password as string,
-					user.password ?? "",
-				);
-
-				if (!isCorrectPassword) {
-					throw new Error("Invalid credentials");
-				}
-
-				const authUser: NextAuthUser = {
-					id: user.id.toString(),
-					name: user.name,
-					email: user.email,
-				};
-				return authUser;
+export const auth = betterAuth({
+	database: drizzleAdapter(db, {
+		provider: "pg",
+		schema: {
+			users,
+			session: sessions,
+			account: accounts,
+			verification: verifications,
+			user: users,
+		},
+	}),
+	appName: "Health Card",
+	baseURL: process.env.BETTER_AUTH_URL,
+	plugins: [nextCookies()],
+	emailAndPassword: {
+		enabled: true,
+		autoSignIn: false,
+		minPasswordLength: 4,
+		password: {
+			hash: async (password) => bcrypt.hash(password, 10),
+			verify: async ({ hash, password }) => bcrypt.compare(password, hash),
+		},
+	},
+	user: {
+		modelName: "users",
+		additionalFields: {
+			password: {
+				type: "string",
+				required: false,
+				input: false,
 			},
-		}),
-	],
-	callbacks: {
-		async jwt({ token, user }) {
-			// User is available during sign-in
-			if (user) {
-				token.id = user.id;
-			}
-			return token;
 		},
-		async session({ session, token }) {
-			session.user.id = token.id as string;
+	},
+	account: {
+		modelName: "account",
+	},
+	session: {
+		modelName: "session",
+	},
+	verification: {
+		modelName: "verification",
+	},
+	advanced: {
+		database: {
+			generateId: ({ model }) => {
+				if (model === "user" || model === "users") {
+					return false;
+				}
 
-			return session;
+				return crypto.randomUUID();
+			},
 		},
-		...authConfig.callbacks,
 	},
 });
+
+export type AuthSession = typeof auth.$Infer.Session;
+export type AuthUser = AuthSession["user"];

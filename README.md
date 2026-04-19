@@ -45,21 +45,21 @@ If `node --version` does not print `v24.14.1`, install the required Node.js vers
 
 Copy [.env.example](.env.example) to `.env` and provide the values below.
 
-| Variable       | Description                                                                      |
-| -------------- | -------------------------------------------------------------------------------- |
-| `DATABASE_URL` | PostgreSQL connection, e.g. `postgresql://user:password@localhost:5432/your_app` |
-| `AUTH_SECRET`  | Secret used by Better Auth to sign and encrypt tokens (`openssl rand -base64 32`) |
-| `BETTER_AUTH_URL` | Site origin used for auth callbacks locally, usually `http://localhost:3000` |
+| Variable          | Description                                                                       |
+| ----------------- | --------------------------------------------------------------------------------- |
+| `DATABASE_URL`    | PostgreSQL connection, e.g. `postgresql://user:password@localhost:5432/your_app`  |
+| `AUTH_SECRET`     | Secret used by Better Auth to sign and encrypt tokens (`openssl rand -base64 32`) |
+| `BETTER_AUTH_URL` | Site origin used for auth callbacks locally, usually `http://localhost:3000`      |
 
 ### Vercel environments matrix
 
 This project uses one Neon Postgres project with DB branches and maps them by Vercel environment.
 
-| Vercel environment | Purpose | Local env file | Typical Neon branch |
-| --- | --- | --- | --- |
-| `development` | Daily local development | `.env.development.local` | `vercel-dev` |
-| `preview` | Pull request validation before merge | `.env.preview.local` | `preview/*` |
-| `production` | Live application on `main` | `.env.production.local` | `production` |
+| Vercel environment | Purpose                              | Local env file           | Typical Neon branch |
+| ------------------ | ------------------------------------ | ------------------------ | ------------------- |
+| `development`      | Daily local development              | `.env.development.local` | `vercel-dev`        |
+| `preview`          | Pull request validation before merge | `.env.preview.local`     | `preview/*`         |
+| `production`       | Live application on `main`           | `.env.production.local`  | `production`        |
 
 Use these commands to sync local env files from Vercel:
 
@@ -215,6 +215,23 @@ Use the shared Drizzle client from [src/lib/drizzle.ts](src/lib/drizzle.ts) toge
 - Tests are colocated with implementation using `*.test.tsx`.
 - CI is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml) and runs install, typecheck, lint, coverage tests, build, and SonarQube scanning.
 
-## Agent-specific guidance
+## AI tools
 
-For agent-specific implementation guidance, repo conventions, and editing entry points, see [AGENTS.md](AGENTS.md).
+### Project-configured Claude plugins
+
+Configured in [.claude/settings.json](.claude/settings.json):
+
+- `context7@claude-plugins-official`
+- `code-review@claude-plugins-official`
+- `code-simplifier@claude-plugins-official`
+
+These are repository-level settings stored in the project.
+
+### Skills
+
+- `deploy-to-vercel`
+- `vercel-cli-with-tokens`
+- `vercel-composition-patterns`
+- `vercel-react-best-practices`
+- `vercel-react-view-transitions`
+- `web-design-guidelines`

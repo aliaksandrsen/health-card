@@ -13,6 +13,9 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_SECRET: ci-test-secret-ci-test-secret-ci
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v6

@@ -6,9 +6,12 @@
 # out
 .agent
 .agents
+.claude
+drizzle
 src/comonents/ui
 .prettierrc
-# pnpm-lock.yaml
+pnpm-lock.yaml
+skills-lock.json
 # package-lock.json
 # yarn.lock
 # *.tsbuildinfo

@@ -3,10 +3,12 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
-
-# Workaround for better-auth@1.6.x bug: @better-auth/kysely-adapter imports
-# DEFAULT_MIGRATION_TABLE from 'kysely' main entry, but kysely@0.29 moved it
-# to 'kysely/migration'. Pin to 0.28.x until better-auth ships the fix.
-# See: https://github.com/better-auth/better-auth/issues/9810
-overrides:
-  kysely: "^0.28.17"
+minimumReleaseAgeExclude:
+  - '@better-auth/core@1.6.18'
+  - '@better-auth/drizzle-adapter@1.6.18'
+  - '@better-auth/kysely-adapter@1.6.18'
+  - '@better-auth/memory-adapter@1.6.18'
+  - '@better-auth/mongo-adapter@1.6.18'
+  - '@better-auth/prisma-adapter@1.6.18'
+  - '@better-auth/telemetry@1.6.18'
+  - better-auth@1.6.18

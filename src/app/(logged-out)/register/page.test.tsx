@@ -138,8 +138,7 @@ describe("RegisterPage", () => {
 
 	it("disables the form while submitting", async () => {
 		let resolveRegister:
-			| ((value: { error: string } | undefined) => void)
-			| undefined;
+			((value: { error: string } | undefined) => void) | undefined;
 		registerUserMock.mockImplementationOnce(
 			() =>
 				new Promise<{ error: string } | undefined>((resolve) => {

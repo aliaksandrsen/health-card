@@ -116,8 +116,7 @@ describe("LoginPage", () => {
 
 	it("disables the form while submitting", async () => {
 		let resolveLogin:
-			| ((value: { error: string } | undefined) => void)
-			| undefined;
+			((value: { error: string } | undefined) => void) | undefined;
 		loginWithCredentialsMock.mockImplementationOnce(
 			() =>
 				new Promise<{ error: string } | undefined>((resolve) => {

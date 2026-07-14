@@ -49,7 +49,7 @@
 ### Runtime environment
 
 - Always use `nvm` to run and switch Node.js versions in this repository.
-- Use Node.js `24.17.0` for installs, tests, builds, and other project commands.
+- Use Node.js `24.18.0` for installs, tests, builds, and other project commands.
 
 ### Imports and paths
 

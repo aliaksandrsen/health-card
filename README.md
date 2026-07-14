@@ -25,7 +25,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 ## Prerequisites
 
 - Node.js 24.18.0
-- pnpm 11.12.0
+- pnpm 11.13.0
 - PostgreSQL database accessible from your development environment
 
 ## Install Node.js and pnpm
@@ -36,7 +36,7 @@ Health Card is a Next.js 16 application for tracking healthcare visits and stori
 nvm install 24.18.0
 nvm use 24.18.0
 corepack enable
-corepack prepare pnpm@11.12.0 --activate
+corepack prepare pnpm@11.13.0 --activate
 ```
 
 If `node --version` does not print `v24.18.0`, install the required Node.js version first.
@@ -106,7 +106,7 @@ If auth fails with errors like `relation "account" does not exist`, it usually m
    nvm install 24.18.0
    nvm use 24.18.0
    corepack enable
-   corepack prepare pnpm@11.12.0 --activate
+   corepack prepare pnpm@11.13.0 --activate
    ```
 2. Verify that pnpm is available.
    ```bash

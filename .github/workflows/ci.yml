@@ -18,7 +18,7 @@ jobs:
       BETTER_AUTH_SECRET: ci-test-secret-ci-test-secret-ci
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6.0.9
+      - uses: pnpm/action-setup@v6.0.10
       - uses: actions/setup-node@v7.0.0
         with:
           node-version-file: ".nvmrc"

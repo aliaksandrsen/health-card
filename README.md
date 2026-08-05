@@ -235,3 +235,5 @@ These are repository-level settings stored in the project.
 - `vercel-react-best-practices`
 - `vercel-react-view-transitions`
 - `web-design-guidelines`
+
+- test changes 1

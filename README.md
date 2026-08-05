@@ -237,3 +237,4 @@ These are repository-level settings stored in the project.
 - `web-design-guidelines`
 
 - test changes 1
+- test changes 2

@@ -100,8 +100,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       baseline-browser-mapping:
-        specifier: 2.11.16
-        version: 2.11.16
+        specifier: 2.11.18
+        version: 2.11.18
       dotenv-cli:
         specifier: 11.0.0
         version: 11.0.0
@@ -1920,6 +1920,11 @@ packages:
 
   baseline-browser-mapping@2.11.16:
     resolution: {integrity: sha512-H/bNPUFHewJHyCTdjn1n3Pit5+2GmWT6mmeHImPX+8MA9NA6b67jO4gYmi4jTbCJb2otq34KMZnovndDPqJwhQ==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  baseline-browser-mapping@2.11.18:
+    resolution: {integrity: sha512-1iEmLEYSiE1SeBoAfPo/Mnx3PzfzHUkDK61ASkCpuk3YXugYLH5DYK1SzqV55F8FMI6s0F+/tCP7Polz1QRjxw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -5097,6 +5102,8 @@ snapshots:
 
   baseline-browser-mapping@2.11.16: {}
 
+  baseline-browser-mapping@2.11.18: {}
+
   bcrypt@6.0.0:
     dependencies:
       node-addon-api: 8.5.0
@@ -6293,7 +6300,7 @@ snapshots:
     dependencies:
       '@next/env': 16.3.1
       '@swc/helpers': 0.5.23
-      baseline-browser-mapping: 2.11.16
+      baseline-browser-mapping: 2.11.18
       caniuse-lite: 1.0.30001809
       postcss: 8.5.23
       react: 19.2.8

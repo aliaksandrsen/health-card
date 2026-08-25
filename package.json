@@ -32,7 +32,7 @@
 		"@types/react-dom": "19.2.4",
 		"@vitejs/plugin-react": "6.1.0",
 		"@vitest/coverage-v8": "4.1.11",
-		"baseline-browser-mapping": "2.11.16",
+		"baseline-browser-mapping": "2.11.18",
 		"dotenv-cli": "11.0.0",
 		"drizzle-kit": "0.31.10",
 		"eslint": "9.39.5",

@@ -20,6 +20,10 @@ const drizzleClientSingleton = (): Database => {
 		// Allow builds/tests without a DB; fail fast on actual DB usage.
 		return new Proxy({} as Database, {
 			get() {
+			get(_target, prop) {
+				if (prop === "_") {
+					return undefined;
+				}
 				throw new Error("DATABASE_URL is not set");
 			},
 		});

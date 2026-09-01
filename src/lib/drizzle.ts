@@ -19,7 +19,6 @@ const drizzleClientSingleton = (): Database => {
 	if (!connectionString) {
 		// Allow builds/tests without a DB; fail fast on actual DB usage.
 		return new Proxy({} as Database, {
-			get() {
 			get(_target, prop) {
 				if (prop === "_") {
 					return undefined;

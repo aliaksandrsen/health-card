@@ -2,15 +2,17 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PREVIEW_COUNT } from "./const";
 
+const HOME_SKELETON_KEYS = Array.from(
+	{ length: PREVIEW_COUNT },
+	(_, index) => `home-visit-skeleton-${index}`,
+);
+
 export default function HomeLoading() {
 	return (
 		<div className="flex flex-1 flex-col items-center p-8">
 			<div className="mb-8 grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{Array.from({ length: PREVIEW_COUNT }).map((_, index) => (
-					<Card
-						key={`home-visit-skeleton-${index}`}
-						className="shadow-md transition-shadow"
-					>
+				{HOME_SKELETON_KEYS.map((skeletonKey) => (
+					<Card key={skeletonKey} className="shadow-md transition-shadow">
 						<CardHeader>
 							<Skeleton className="h-6 w-3/4" />
 						</CardHeader>

@@ -24,6 +24,9 @@ export default defineConfig(
 		ignores: [
 			"node_modules/**",
 			".next/**",
+			".agent/**",
+			".agents/**",
+			".claude/**",
 			"out/**",
 			"build/**",
 			"dist/**",

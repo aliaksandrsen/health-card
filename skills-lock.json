@@ -5,37 +5,109 @@
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/deploy-to-vercel/SKILL.md",
-      "computedHash": "03e0eaaa9bf13ba1e7ffa387f5893de6f324c0868c627001f179395a8feaa7c9"
+      "computedHash": "a024eac409b1bb2e072a19e7e0d7f194ac5482c87fb1a2ad6f62d041b454040c"
+    },
+    "sonar-analyze": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-analyze/SKILL.md",
+      "computedHash": "e962c95d5eee4d1223492ae31e7ac4cf1d04be870c0327144998944a95a3ec7f"
+    },
+    "sonar-coverage": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-coverage/SKILL.md",
+      "computedHash": "d96f4133a80f12678c871478f8c4b0f1c6c9d2cdc72b84e0b91a9549cab24b24"
+    },
+    "sonar-dependency-risks": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-dependency-risks/SKILL.md",
+      "computedHash": "5317675fbe0c37246f4247d9bad855a23fa16ffd9c12ed2dc7745ecfe8207c3b"
+    },
+    "sonar-duplication": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-duplication/SKILL.md",
+      "computedHash": "a5d338ae4b8ed732ed089270f9ca140c7512956bf03fdbe9b5829eac84726917"
+    },
+    "sonar-fix-issue": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-fix-issue/SKILL.md",
+      "computedHash": "a643a5d5fa70ac603633dcc1ccefe3280ddedc411696d4ba065886088c0060d7"
+    },
+    "sonar-integrate": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-integrate/SKILL.md",
+      "computedHash": "c38e01c371f4434c82750f586f915ca7873f9ffcfb331d6a53c2ce09ec79cabf"
+    },
+    "sonar-list-issues": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-list-issues/SKILL.md",
+      "computedHash": "5dc990666ebbc4b3bdf730d21292a61f85085574926899b2af8d7f7a300f8871"
+    },
+    "sonar-list-projects": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-list-projects/SKILL.md",
+      "computedHash": "a87f24e9e43a52fe521175ad2df15d890b1cf885d8f7e3a9a0729d06ccbfe32d"
+    },
+    "sonar-quality-gate": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-quality-gate/SKILL.md",
+      "computedHash": "02cec6a0fe74b57f38b479fbd1211bfb187658b32947efcad1224e89c58254b3"
+    },
+    "sonar-triage-dependency-risks": {
+      "source": "sonarsource/sonarqube-agent-plugins",
+      "sourceType": "github",
+      "skillPath": "skills/sonar-triage-dependency-risks/SKILL.md",
+      "computedHash": "5db0ffab9da99b2564e682a026da396d8908097d93d46d59cc8c7aa0e88b111d"
+    },
+    "vercel-cli": {
+      "source": "vercel/vercel",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-cli/SKILL.md",
+      "computedHash": "1b8ad00e44fc817a8baabac6524b83cb329b25e01828d4c9ebc5bf1baad68bf3"
     },
     "vercel-cli-with-tokens": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/vercel-cli-with-tokens/SKILL.md",
-      "computedHash": "eb16b20dcbe6ce51e0372083d624e0847af1b09487ec99249227d5a8eddebfc0"
+      "computedHash": "a2f596ac516fe8986386f9562f4c94604af9fb6a0fc417d263cbe6dc05117b72"
     },
     "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/composition-patterns/SKILL.md",
-      "computedHash": "575757e3e25761c8c562d6e395d29f0b76c98b1273c0bd72d88e6ab1bc9c7d42"
+      "computedHash": "f98931159fa9c7fed043bcd18a891a46dcf89ababa38df13a4c5b7b30dc0ce07"
+    },
+    "vercel-optimize": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-optimize/SKILL.md",
+      "computedHash": "9d4ace02972b9b1c462f097c7322eb32c9f04bba6f2fb5cf482086d402eeec33"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/react-best-practices/SKILL.md",
-      "computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
     },
     "vercel-react-view-transitions": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/react-view-transitions/SKILL.md",
-      "computedHash": "c8952fc9127fa0564d0cb71dccb4215a5608ac933b5831104f09173a97a46f85"
+      "computedHash": "6c9169eb561dcdea32408e2525a2eb5375d709dd8dbb3412b895e6c58a8dc22e"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/web-design-guidelines/SKILL.md",
-      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
     }
   }
 }

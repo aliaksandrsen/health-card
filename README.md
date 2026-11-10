@@ -230,8 +230,20 @@ These are repository-level settings stored in the project.
 ### Skills
 
 - `deploy-to-vercel`
+- `sonar-analyze`
+- `sonar-coverage`
+- `sonar-dependency-risks`
+- `sonar-duplication`
+- `sonar-fix-issue`
+- `sonar-integrate`
+- `sonar-list-issues`
+- `sonar-list-projects`
+- `sonar-quality-gate`
+- `sonar-triage-dependency-risks`
+- `vercel-cli`
 - `vercel-cli-with-tokens`
 - `vercel-composition-patterns`
+- `vercel-optimize`
 - `vercel-react-best-practices`
 - `vercel-react-view-transitions`
 - `web-design-guidelines`

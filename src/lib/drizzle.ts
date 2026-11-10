@@ -31,12 +31,12 @@ const drizzleClientSingleton = (): Database => {
 	return createDatabase(connectionString).db;
 };
 
-declare const globalThis: {
-	drizzleGlobal: ReturnType<typeof drizzleClientSingleton>;
-} & typeof global;
+const globalForDrizzle = globalThis as unknown as {
+	drizzleGlobal?: ReturnType<typeof drizzleClientSingleton>;
+};
 
-const db = globalThis.drizzleGlobal ?? drizzleClientSingleton();
+const db = globalForDrizzle.drizzleGlobal ?? drizzleClientSingleton();
 
 export default db;
 
-if (process.env.NODE_ENV !== "production") globalThis.drizzleGlobal = db;
+if (process.env.NODE_ENV !== "production") globalForDrizzle.drizzleGlobal = db;

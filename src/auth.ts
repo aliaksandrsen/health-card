@@ -17,7 +17,9 @@ export const auth = betterAuth({
 		},
 	}),
 	appName: "Health Card",
-	baseURL: process.env.BETTER_AUTH_URL,
+	baseURL:
+		process.env.BETTER_AUTH_URL ||
+		(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined),
 	plugins: [nextCookies()],
 	emailAndPassword: {
 		enabled: true,
